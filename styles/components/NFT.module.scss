@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    width: 75vw;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 5%;
+    height: 100vh;
+}
+
+.detail {
+    width: 40vw;
+}
+
+.media {
+    width: 70vw;
+    filter: drop-shadow(0px 5px 10px black);
+}

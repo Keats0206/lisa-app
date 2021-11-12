@@ -1,7 +1,14 @@
-import '../styles/globals.css'
+import "../styles/globals.scss"; // Global styles
+import GlobalProvider from "../containers/index";
+import { ParallaxProvider } from 'react-scroll-parallax';
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+export default function MyApp({ Component, pageProps }) {
+  return (
+    // Wrap page in global state provider
+    <GlobalProvider>
+      <ParallaxProvider>
+      <Component {...pageProps} />
+      </ParallaxProvider>
+    </GlobalProvider>
+  );
 }
-
-export default MyApp
