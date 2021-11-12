@@ -1,4 +1,5 @@
 import Link from "next/link"; // Dynamic routing
+import Image from "next/image";
 import { useState } from "react"; // State management
 import { web3 } from "../containers/index"; // Global state
 import styles from "../styles/components/Header.module.scss"; // Component styles
@@ -18,14 +19,14 @@ export default function Header() {
     <div className={styles.header}>
       {/* Logo */}
       <div className={styles.header__logo}>
-          <img src="/logo.png" alt="Zora" />
+          <Image src="/logo.jpeg" alt="Warhol Can" height={75} width={75}/>
       </div>
       {/* Menu */}
       <div className={styles.header__menu}>
         {address ? (
           // If user is authenticated
           <>
-              <a className={styles.header__menu_button_black}>
+              <a className={styles.header__menu_button_gray}>
                 {address.substr(0, 5) +
                   "..." +
                   address.slice(address.length - 5)}
@@ -34,7 +35,7 @@ export default function Header() {
         ) : (
           // Else if user is not authenticated
           <button
-            className={styles.header__menu_button_black}
+            className={styles.header__menu_button_gray}
             onClick={authenticateWithLoading}
             disabled={loading}
           >

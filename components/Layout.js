@@ -10,7 +10,8 @@ export default function Layout({ children }, isProfile) {
       {/* Content container */}
       <div className={styles.container}>{children}</div>
       <div className={styles.background}>
-        <h1>11 Lit3s</h1>
+        <h1>Andy Warhol</h1>
+        <h3>Welcome to the Factory. Print bootleg NFTs of Warhol art on the Rinkeby Testnet.</h3>
       </div>
     </div>
   );

@@ -1,17 +1,62 @@
 .container {
-    display: flex;
-    width: 75vw;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 5%;
-    height: 100vh;
+  display: flex;
+  width: 75vw;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 5%;
+  height: 100vh;
+  background-color: white;
 }
 
 .detail {
-    width: 40vw;
+  width: 40vw;
+  h3 {
+    opacity: 0.6;
+  }
+  h4 {
+    opacity: 0.4;
+  }
+
+  button,
+  a {
+    padding: 15px 35px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0px 5px;
+  }
+
+  button:last-of-type,
+  a:last-of-type {
+    margin-right: 0px;
+  }
+
+  button:focus {
+    outline: none;
+  }
+
+  button:hover,
+  a:hover {
+    opacity: 0.75;
+  }
 }
 
 .media {
-    width: 70vw;
-    filter: drop-shadow(0px 5px 10px black);
+  width: 70vw;
+  filter: drop-shadow(0px 5px 10px black);
+}
+
+.nft__action_button_black {
+  color: #fff;
+  background-color: #000;
+}
+
+// Responsiveness
+@media screen and (max-width: 1200px) {
+  .container {
+    width: 100vw;
+  }
 }

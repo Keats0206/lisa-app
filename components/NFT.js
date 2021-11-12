@@ -20,7 +20,7 @@ export default function NFT({ nft }) {
 
   useEffect(() => {
     getSupply();
-  }, [address]);
+  }, [address, getSupply]);
 
   return (
     <div className={styles.container}>
@@ -39,7 +39,12 @@ export default function NFT({ nft }) {
               {nftSupply} out of {nft.editionSize}
             </h2>
           </div>
-          <button onClick={() => handlePurchase()}>Purchase Edition</button>
+          <button
+            className={styles.nft__action_button_black}
+            onClick={() => handlePurchase()}
+          >
+            Purchase Edition
+          </button>
         </Parallax>
       </div>
       <div className={styles.media}>

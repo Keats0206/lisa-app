@@ -2,10 +2,10 @@
   padding: 0px 0px 0px 0px;
 }
 
-
 .background {
   position: fixed;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   top: 0;
@@ -13,13 +13,14 @@
   right: 0; 
   margin-left: auto; 
   margin-right: auto; 
-  width: 100%; /* Need a specific value to work */
+  width: 75vw;
   height: 100%;
   z-index: -100;
 
   h1{
-    font-size: 80px;
-    color: purple;
+    font-size: 70px;
+    color: red;
+    font-family: 'Syne', sans-serif;
   }
 }
   

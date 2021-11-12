@@ -1,8 +1,4 @@
-.html,
-.body {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto&family=Syne:wght@400;500;800&display=swap');
 
 .a {
   color: inherit;
@@ -11,4 +7,16 @@
 
 * {
   box-sizing: border-box;
+
+  h1, h2 {
+    font-family: 'Syne', sans-serif;
+  }
+
+  h3, h4 {
+    font-family: 'Libre Baskerville', serif;
+  }
+  
+  p, caption {
+    font-family: 'Roboto', sans-serif;
+  }
 }
