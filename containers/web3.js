@@ -10,7 +10,7 @@ const providerOptions = {
     package: WalletConnectProvider,
     options: {
       // Inject Infura
-      infuraId: process.env.NEXT_PUBLIC_INFURA_ID,
+      infuraId: process.env.NEXT_PUBLIC_INFURA_ID_RINKEBY,
     },
   },
 };
@@ -34,8 +34,11 @@ function useWeb3() {
     });
     // Set web3Modal
     setModal(web3Modal);
-  };
+  };  
 
+  // Creating infura provider for dApp connection
+  let infura = new ethers.providers.InfuraProvider('rinkeby'); 
+  
   /**
    * Authenticate and store necessary items in global state
    */
@@ -65,10 +68,8 @@ function useWeb3() {
       signer
     );
 
-    console.log(factoryContract);
-
     // Set up metadata of Edition:
-
+    
     /// @param _name Name of the edition contract
     /// @param _symbol Symbol of the edition contract
     /// @param _description Metadata: Description of the edition entry
@@ -78,6 +79,7 @@ function useWeb3() {
     /// @param _imageHash Metadata: SHA-256 hash of the Image of the edition entry (if not image, can be 0x0)
     /// @param _editionSize Total size of the edition (number of possible editions)
     /// @param _royaltyBPS BPS amount of royalty
+
     // var editionMetadata = {
     //   name: "Petes First NFT",
     //   symbol: "PETE",
@@ -88,29 +90,53 @@ function useWeb3() {
     //   royaltyBPS: 11,
     // };
 
+    // var editionMetadata = {
+    //   name: "Gemini",
+    //   symbol: "11LIT3S",
+    //   description:
+    //     "Gemini nft drop from 11 LIT3S artist - part 1 of the ongoing series of 6 up coming NFT drops",
+    //   animationUrl:
+    //     "https://ipfs.io/ipfs/QmX13sSh8VqmAsgCwdMegj2ZhNQFPUbwifF944gFHhVTr8",
+    //   editionSize: 11,
+    //   royaltyBPS: 1000,
+    // };
+
     var editionMetadata = {
-      name: "Warhol Print #3",
-      symbol: "WAR",
-      description: "This is an ongoing series of Warhol Prints available only on Rinkeby Testnet",
-      imageUrl:
-        "https://ipfs.io/ipfs/QmVZxPPTSD8A8ZBNCk9Gv444oHtyx7jU8mnETd25UUZtU1",
+      name: "Your Silence",
+      symbol: "11LIT3S",
+      description:
+        "Your silence nft drop from 11 LIT3S artist - part 2 of the ongoing series of 6 up coming NFT drops",
+      animationUrl:
+        "https://ipfs.io/ipfs/QmSiz6WSTn4hZ6q76R1F8NUtoRuqRxfrbEHL28tsex7J4p",
       editionSize: 11,
-      royaltyBPS: 10,
+      royaltyBPS: 1000,
     };
 
-    // Sent transaction and return newID of Edition NFT contract
-    const newID = await factoryContract.createEdition(
-      editionMetadata.name,
-      editionMetadata.symbol,
-      editionMetadata.description,
-      "",
-      "0x0000000000000000000000000000000000000000000000000000000000000000",
-      editionMetadata.imageUrl,
-      "0x0000000000000000000000000000000000000000000000000000000000000000",
-      // 1% royalty since BPS
-      editionMetadata.editionSize,
-      editionMetadata.royaltyBPS
-    );
+    try {
+      const tx = await factoryContract.createEdition(
+        editionMetadata.name,
+        editionMetadata.symbol,
+        editionMetadata.description,
+        editionMetadata.animationUrl,
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "",
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+        // 10% royalty
+        editionMetadata.editionSize,
+        editionMetadata.royaltyBPS
+      );
+      console.log(tx);
+      return {
+        result: true,
+        message:
+        "✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" + tx.hash,
+      };
+    } catch (error) {
+      return {
+        result: false,
+        message: "😥 Something went wrong: " + error.message,
+      };
+    }
   };
 
   const getEditionURIs = async () => {
@@ -123,10 +149,10 @@ function useWeb3() {
     // const minterAddress = "0xe7283fe42dc876e1d8bc48c99efb54468f6d23ed"
 
     // Warhol Third Address
-    const minterAddress = "0xaf0aef35b61705189a59374608de9100a1b96c4c"
+    const minterAddress = "0xaf0aef35b61705189a59374608de9100a1b96c4c";
 
     const minterABI = require("../contracts/abi/minter.json");
-    
+
     const mintingContract = new ethers.Contract(
       minterAddress,
       minterABI.abi,
@@ -137,9 +163,9 @@ function useWeb3() {
   };
 
   const setSalePrice = async () => {
-    const minterAddress = "0xaf0aef35b61705189a59374608de9100a1b96c4c"
+    const minterAddress = "0xaf0aef35b61705189a59374608de9100a1b96c4c";
     const minterABI = require("../contracts/abi/minter.json");
-    
+
     const mintingContract = new ethers.Contract(
       minterAddress,
       minterABI.abi,
@@ -150,19 +176,21 @@ function useWeb3() {
 
     try {
       await mintingContract.setSalePrice(salePrice);
-      console.log("Succesfully set sale price to:" + salePrice)
+      console.log("Succesfully set sale price to:" + salePrice);
     } catch {
-      console.log("Sheeeeeeeeesh")
+      console.log("Sheeeeeeeeesh");
     }
   };
 
   const getTotalSupply = async (mintContractAddress) => {
+    const provider = new ethers.providers.JsonRpcProvider()
+
     const minterABI = require("../contracts/abi/minter.json");
-    
+
     const mintingContract = new ethers.Contract(
       mintContractAddress,
       minterABI.abi,
-      signer
+      infura
     );
 
     try {
@@ -170,13 +198,13 @@ function useWeb3() {
       console.log(supply);
       return supply.toNumber();
     } catch {
-      console.log("error");
+      console.log("Couldn't get supply!");
     }
   };
 
   const purchaseEdition = async (mintContractAddress) => {
     const minterABI = require("../contracts/abi/minter.json");
-    
+
     const mintingContract = new ethers.Contract(
       mintContractAddress,
       minterABI.abi,
@@ -186,10 +214,12 @@ function useWeb3() {
     const salePrice = ethers.utils.parseEther("0.08");
 
     try {
-      await mintingContract.purchase({ value: ethers.utils.parseEther("0.08") });
-      console.log("Succesfully purchased" + salePrice)
+      await mintingContract.purchase({
+        value: ethers.utils.parseEther("0.08"),
+      });
+      console.log("Succesfully purchased" + salePrice);
     } catch {
-      console.log("Sheeeeeeeeesh")
+      console.log("Sheeeeeeeeesh");
     }
   };
 
@@ -202,7 +232,7 @@ function useWeb3() {
   // On load events
   useEffect(setupWeb3Modal, []);
   useEffect(checkCached, [modal]);
-  
+
   return {
     address,
     authenticate,
@@ -211,7 +241,7 @@ function useWeb3() {
     getEditionURIs,
     setSalePrice,
     purchaseEdition,
-    getTotalSupply
+    getTotalSupply,
   };
 }
 

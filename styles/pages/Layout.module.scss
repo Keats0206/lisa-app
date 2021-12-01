@@ -3,6 +3,8 @@
 }
 
 .background {
+  background-color: black;
+  color: white;
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -19,15 +21,24 @@
 
   h1{
     font-size: 70px;
-    color: red;
+    color: purple;
     font-family: 'Syne', sans-serif;
   }
+}
+
+.arrows {  
+  position: absolute;
+  display: flex;
+  width: 100vw;
+  bottom: 20px;
+  justify-content: center;
+  color: #FFFFFF;
+  text-align: center;
 }
   
   // Responsiveness
   @media screen and (max-width: 750px) {
     .container {
-      // Reduce left/right padding on mobile displays
       padding: 0px 12px 30px 12px;
     }
   }

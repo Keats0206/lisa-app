@@ -1,62 +1,101 @@
 .container {
   display: flex;
   width: 75vw;
+  height: 120vh;
   margin-left: auto;
   margin-right: auto;
   padding-top: 5%;
-  height: 100vh;
-  background-color: white;
+  color: white;
+  align-items: center;
 }
 
 .detail {
-  width: 40vw;
+  width: 30vw;
+  padding-right: 20px;
+  padding-bottom: 100px;
+
+  h2 {
+    font-size: 22px;
+  }
+
   h3 {
     opacity: 0.6;
   }
+
   h4 {
     opacity: 0.4;
   }
-
   button,
   a {
-    padding: 15px 35px;
+    height: 50px;
+    width: 100%;
     border-radius: 8px;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 16px;
-    border: none;
     cursor: pointer;
     text-decoration: none;
     margin: 0px 5px;
+    border: none;
   }
-
   button:last-of-type,
   a:last-of-type {
     margin-right: 0px;
   }
-
   button:focus {
     outline: none;
   }
-
   button:hover,
   a:hover {
     opacity: 0.75;
+  }
+
+  button:disabled,
+  a:disabled {
+    opacity: 0.75;
+    cursor: default;
+  }
+
+  .nft__button_noauth {
+    color: white;
+    border: solid 3px red;
   }
 }
 
 .media {
   width: 70vw;
-  filter: drop-shadow(0px 5px 10px black);
-}
-
-.nft__action_button_black {
-  color: #fff;
-  background-color: #000;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 // Responsiveness
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 900px) {
   .container {
-    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    width: 90vw;
+    height: 90vh;
+
+  }  
+
+  .detail {
+    width: 90vw;
+    order: 2;
+  }
+
+  .sub_details {
+    display: flex;
+    flex-direction: row;
+    div {
+      padding-right: 50px;
+    }
+    padding-bottom: 20px;
+  }
+
+  .media {
+    width: 90vw;
+    align-self: flex-start;
+    order: 1;
   }
 }

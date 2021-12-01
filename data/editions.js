@@ -1,34 +1,25 @@
-const warholFirst = {
-    contractAddress: "0xf02acd6b2c34ea83bd839c66b51bc7be17c18aba",
-    name: "Warhol Print #1",
-    symbol: "WAR",
-    description: "This is an ongoing series of Warhol Prints available only on Rinkeby Testnet",
-    imageUrl:
-      "https://ipfs.io/ipfs/QmZ168bCkTAUQJtz6RVvVnML73Vopwd6BdnkeUmYCsM6vi",
-    editionSize: 11,
-    royaltyBPS: 10,
-};
-
-const warholSecond = {
-  contractAddress: "0xe7283fe42dc876e1d8bc48c99efb54468f6d23ed",
-  name: "Warhol Print #2",
-  symbol: "WAR",
-  description: "This is an ongoing series of Warhol Prints available only on Rinkeby Testnet",
-  imageUrl:
-    "https://ipfs.io/ipfs/QmXTwKnrqiY6Bhydd4Y2wr12UKMFXxVJcptoiTe8t97FwC",
+let gemini = {
+  contractAddress: "0xd968f4e396f5005b9fec7e2eb2a7a97574c5463a",
+  name: "Gemini",
+  symbol: "11LIT3S",
+  description:
+    "Gemini nft drop from 11 LIT3S artist - part 1 of the ongoing series of 6 up coming NFT drops",
+  animationUrl:
+    "https://ipfs.io/ipfs/QmX13sSh8VqmAsgCwdMegj2ZhNQFPUbwifF944gFHhVTr8",
   editionSize: 11,
-  royaltyBPS: 10,
+  royaltyBPS: 1000,
 };
 
-const warholThird = {
-  contractAddress: "0xaf0aef35b61705189a59374608de9100a1b96c4c",
-  name: "Warhol Print #3",
-  symbol: "WAR",
-  description: "This is an ongoing series of Warhol Prints available only on Rinkeby Testnet",
-  imageUrl:
-    "https://ipfs.io/ipfs/QmVZxPPTSD8A8ZBNCk9Gv444oHtyx7jU8mnETd25UUZtU1",
+let yourSilence = {
+  contractAddress: "0x6746a0cf542dd867c6e37f1cba8ea078fe430f0d",
+  name: "Your Silence",
+  symbol: "11LIT3S",
+  description:
+    "Your silence nft drop from 11 LIT3S artist - part 2 of the ongoing series of 6 up coming NFT drops",
+  animationUrl:
+    "https://ipfs.io/ipfs/QmSiz6WSTn4hZ6q76R1F8NUtoRuqRxfrbEHL28tsex7J4p",
   editionSize: 11,
-  royaltyBPS: 10,
+  royaltyBPS: 1000,
 };
 
-export const editions = [warholFirst, warholSecond, warholThird]
+export const editions = [gemini, yourSilence]
