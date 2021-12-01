@@ -8,7 +8,7 @@ import { Parallax } from "react-scroll-parallax";
 import ReactPlayer from "react-player";
 
 export default function NFT({ nft }) {
-  const { address, getTotalSupply, purchaseEdition } = web3.useContainer();
+  const { address, network, getTotalSupply, purchaseEdition } = web3.useContainer();
   const [nftSupply, setNFTSupply] = useState(0);
   const [loading, setLoading] = useState(false); // Loading state
 
@@ -46,7 +46,7 @@ export default function NFT({ nft }) {
             </h2>
           </div>
         </div>
-        {address ? (
+        {(address && network == "rinkeby") ? (
           <button
             onClick={() => handlePurchaseWithLoading()}
             disabled={loading}
@@ -59,7 +59,7 @@ export default function NFT({ nft }) {
             onClick={() => handlePurchaseWithLoading()}
             disabled={true}
           >
-            Connect Your Wallet
+            {network ? "Wrong Network" : "Connect Wallet"}
           </button>
         )}
       </div>

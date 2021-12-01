@@ -21,6 +21,7 @@ function useWeb3() {
   const [signer, setSigner] = useState(null); // ETH address
   const [editionId, setEditionID] = useState(null); // ETH address
   const [web3Provider, setWeb3Provider] = useState(null); // ETH address
+  const [network, setNetwork]= useState(""); // Set Network
 
   /**
    * Setup Web3Modal on page load (requires window)
@@ -49,6 +50,9 @@ function useWeb3() {
     // Generate ethers provider
     const provider = new providers.Web3Provider(web3Provider);
     setWeb3Provider(provider);
+    // Set active network
+    const network = await provider.getNetwork();
+    setNetwork(network.name)
     // Collect address
     const signer = provider.getSigner();
     setSigner(signer);
@@ -236,6 +240,7 @@ function useWeb3() {
   return {
     address,
     authenticate,
+    network,
     createEdition,
     editionId,
     getEditionURIs,
