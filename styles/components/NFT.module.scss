@@ -77,25 +77,5 @@
     width: 90vw;
     height: 90vh;
 
-  }  
-
-  .detail {
-    width: 90vw;
-    order: 2;
-  }
-
-  .sub_details {
-    display: flex;
-    flex-direction: row;
-    div {
-      padding-right: 50px;
-    }
-    padding-bottom: 20px;
-  }
-
-  .media {
-    width: 90vw;
-    align-self: flex-start;
-    order: 1;
-  }
+  } 
 }

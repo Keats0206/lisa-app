@@ -3,6 +3,7 @@ import { ethers, providers } from "ethers"; // Ethers
 import { useState, useEffect } from "react"; // State management
 import { createContainer } from "unstated-next"; // Unstated-next containerization
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
+import { ToastProvider, useToasts } from 'react-toast-notifications';
 
 // Web3Modal provider options
 const providerOptions = {
@@ -21,8 +22,8 @@ function useWeb3() {
   const [signer, setSigner] = useState(null); // ETH address
   const [editionId, setEditionID] = useState(null); // ETH address
   const [web3Provider, setWeb3Provider] = useState(null); // ETH address
-  const [network, setNetwork]= useState(""); // Set Network
-
+  const [network, setNetwork] = useState(""); // Set Network
+  
   /**
    * Setup Web3Modal on page load (requires window)
    */
@@ -35,11 +36,11 @@ function useWeb3() {
     });
     // Set web3Modal
     setModal(web3Modal);
-  };  
+  };
 
   // Creating infura provider for dApp connection
-  let infura = new ethers.providers.InfuraProvider('rinkeby'); 
-  
+  let infura = new ethers.providers.InfuraProvider("rinkeby");
+
   /**
    * Authenticate and store necessary items in global state
    */
@@ -50,14 +51,21 @@ function useWeb3() {
     // Generate ethers provider
     const provider = new providers.Web3Provider(web3Provider);
     setWeb3Provider(provider);
-    // Set active network
+
     const network = await provider.getNetwork();
-    setNetwork(network.name)
-    // Collect address
-    const signer = provider.getSigner();
-    setSigner(signer);
-    const address = await signer.getAddress();
-    setAddress(address);
+    setNetwork(network.name);
+
+    if (network.name == "rinkeby") {
+      // Collect address
+      const signer = provider.getSigner();
+      setSigner(signer);
+      const address = await signer.getAddress();
+      setAddress(address);
+    } else {      
+      // wipe web3 auth state clean
+      setWeb3Provider(null);
+      setNetwork(null);
+    }
   };
 
   const createEdition = async () => {
@@ -73,7 +81,7 @@ function useWeb3() {
     );
 
     // Set up metadata of Edition:
-    
+
     /// @param _name Name of the edition contract
     /// @param _symbol Symbol of the edition contract
     /// @param _description Metadata: Description of the edition entry
@@ -133,7 +141,8 @@ function useWeb3() {
       return {
         result: true,
         message:
-        "✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" + tx.hash,
+          "✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" +
+          tx.hash,
       };
     } catch (error) {
       return {
@@ -187,7 +196,7 @@ function useWeb3() {
   };
 
   const getTotalSupply = async (mintContractAddress) => {
-    const provider = new ethers.providers.JsonRpcProvider()
+    const provider = new ethers.providers.JsonRpcProvider();
 
     const minterABI = require("../contracts/abi/minter.json");
 

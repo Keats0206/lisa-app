@@ -13,9 +13,9 @@ export default function Layout({ children }, isProfile) {
           Welcome to the 11 LIT3S Hotel NFT drop.
         </h3>
       </div>
-      <div className={styles.arrows}>
+      {/* <div className={styles.arrows}>
         <Image src="/white.png" width={50} height={50}></Image>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -1,0 +1,270 @@
+// Create page unauthenticated state
+.create__unauthenticated {
+  display: block;
+  margin: 0px auto;
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+
+  h2 {
+    margin-block-end: 0px;
+  }
+
+  p {
+    color: rbga(255, 255, 255, 0.5);
+    margin-block-start: 10px;
+  }
+
+  button {
+    padding: 18px 25px;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #000;
+    color: #fff;
+    margin-top: 20px;
+  }
+
+  button {
+    height: 50px;
+    width: 100%;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0px 5px;
+    border: none;
+  }
+  button:last-of-type,
+  last-of-type {
+    margin-right: 0px;
+  }
+  button:focus {
+    outline: none;
+  }
+  button:hover,
+  a:hover {
+    opacity: 0.75;
+  }
+
+  button:disabled {
+    opacity: 0.75;
+    cursor: default;
+  }
+}
+
+// Create page authenticated state
+.create {
+  display: block;
+  margin: 0px auto;
+  width: 100%;
+  max-width: 1200px;
+  padding-bottom: 50px;
+  background-color: black;
+  color: white;
+
+  // Create grid layout
+  .create__grid {
+    display: inline-grid;
+    width: 100%;
+    column-gap: 30px;
+    grid-template-columns: repeat(12, 1fr);
+
+    // Input container
+    .create__grid_left {
+      height: auto;
+      grid-column: 1 / 7;
+    }
+
+    // Preview container
+    .create__grid_right {
+      height: auto;
+      grid-column: 8 / 13;
+    }
+
+    div {
+      > h2 {
+        font-weight: 500;
+        font-size: 30px;
+      }
+    }
+  }
+}
+
+.create__upload {
+  width: calc(100% - 4px);
+  border: 2px solid white(0, 0, 0, 0.1);
+  padding: 10px 0px 0px;
+  color: white;
+
+  > div {
+    padding: 20px;
+  }
+
+  div:nth-of-type(1) {
+    div {
+      display: block;
+      margin-block-end: 20px;
+
+      label {
+        display: block;
+        font-size: 17px;
+        font-weight: 500;
+        margin-block-end: 10px;
+        text-align: left;
+      }
+
+      input,
+      textarea {
+        padding: 15px;
+        width: 100%;
+        min-height: 50px;
+        font-size: 15px;
+        line-height: 14px;
+        font-weight: 400;
+        transition: all 0.1s ease-in 0s;
+        color: white;
+        border: 3px solid transparent;
+        background: #161616;
+        outline: none;
+      }
+
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0);
+      }
+
+      > span {
+        display: block;
+        color: rgba(255, 255, 255, 0.7);
+        padding-bottom: 15px;
+        text-align: left;
+      }
+    }
+
+    div:nth-last-of-type(1) {
+      margin-block-end: 0px;
+    }
+  }
+
+  > div:nth-of-type(2) {
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    text-align: right;
+
+    button {
+      height: 50px;
+      width: 100%;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      margin: 0px 5px;
+      border: none;
+    }
+
+    button:disabled {
+      cursor: default;
+    }
+  }
+}
+
+.create__upload_required {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+// Error to display for fee share field
+.create__error {
+  display: block;
+  width: 100%;
+  padding-top: 10px;
+  font-size: 14px;
+  color: #ff0033 !important;
+  text-align: right !important;
+}
+
+// Media upload field
+.upload__field {
+  padding: 15px;
+  width: 100%;
+  height: 100px;
+  font-size: 15px;
+  line-height: 14px;
+  font-weight: 400;
+  transition: all 0.1s ease-in 0s;
+  color: black;
+  border: 2px dashed rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.05);
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  > span {
+    display: block;
+    text-align: center !important;
+    line-height: 70px;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.5);
+    padding-bottom: 0px !important;
+  }
+}
+
+.upload__field:hover {
+  opacity: 0.7;
+}
+
+.create__preview {
+  background-color: #161616;;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+// NFT Prreview styling
+.nft_preview_container {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 5%;
+  color: white;
+  align-items: center;
+}
+
+.detail {
+  width: 90vw;
+  padding-left: 20px;
+  order: 2;
+}
+
+.sub_details {
+  display: flex;
+  flex-direction: row;
+  div {
+    padding-right: 50px;
+  }
+  padding-bottom: 20px;
+}
+
+.media {
+  margin: 10px;
+}
+
+.media_placeholder {
+  width: 500px;
+  height: 300px;
+  background-color: gray;
+}
+
+// Responsive
+@media screen and (max-width: 1000px) {
+  // Column layout
+  .create__grid {
+    display: flex !important;
+    flex-direction: column;
+  }
+}

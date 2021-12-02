@@ -59,7 +59,7 @@ export default function NFT({ nft }) {
             onClick={() => handlePurchaseWithLoading()}
             disabled={true}
           >
-            {network ? "Wrong Network" : "Connect Wallet"}
+            Connect Wallet
           </button>
         )}
       </div>
