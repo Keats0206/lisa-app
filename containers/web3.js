@@ -21,7 +21,7 @@ function useWeb3() {
   const [signer, setSigner] = useState(null); // ETH address
   const [editionId, setEditionID] = useState(null); // ETH address
   const [web3Provider, setWeb3Provider] = useState(null); // ETH address
-  const [network, setNetwork] = useState(""); // Set Network
+  const [activeNetwork, setActiveNetwork] = useState(""); // Set Network
 
   /**
    * Setup Web3Modal on page load (requires window)
@@ -50,22 +50,43 @@ function useWeb3() {
     // Generate ethers provider
     const provider = new providers.Web3Provider(web3Provider);
     setWeb3Provider(provider);
-
-    const network = await provider.getNetwork();
-    setNetwork(network.name);
-
+    const signer = provider.getSigner();
+    setSigner(signer);
+    const address = await signer.getAddress();
+    setAddress(address);
+    const network = await provider.getNetwork(); 
+    console.log(network)
     if (network.name == "rinkeby") {
-      // Collect address
-      const signer = provider.getSigner();
-      setSigner(signer);
-      const address = await signer.getAddress();
-      setAddress(address);
+      setActiveNetwork(true);
     } else {
-      // wipe web3 auth state clean
-      setWeb3Provider(null);
-      setNetwork(null);
+      setActiveNetwork(false);
     }
   };
+
+  const checkChain = async () => {
+    if (address) {
+      const web3Provider = await modal.connect();
+      await web3Provider.enable();
+      // Generate ethers provider
+      const provider = new providers.Web3Provider(web3Provider);
+      setWeb3Provider(provider);
+      const network = provider.getNetwork(); 
+      console.log("Got the network");
+      console.log(network);
+      if (network.name == "rinkeby") {
+        setActiveNetwork(true);
+        console.log("Set activeNetwork to true")
+      } else {
+        setActiveNetwork(false);
+        console.log("Set activeNetwork to false")
+      }
+    } else {
+      console.log("not authenticated")
+    }
+  }
+
+    useEffect(checkChain, []);
+
 
   const createEdition = async () => {
     // const web3 = createAlchemyWeb3(API_URL);
@@ -77,7 +98,7 @@ function useWeb3() {
       contractAddress,
       contract.abi,
       signer
-    );
+  );
 
     // Set up metadata of Edition:
 
@@ -243,7 +264,7 @@ function useWeb3() {
   return {
     address,
     authenticate,
-    network,
+    activeNetwork,
     createEdition,
     editionId,
     setSalePrice,

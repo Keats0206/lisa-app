@@ -6,17 +6,22 @@ import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
 import { Parallax } from "react-scroll-parallax";
 import ReactPlayer from "react-player";
-import { useToasts } from 'react-toast-notifications';
+import { useToasts } from "react-toast-notifications";
 
 export default function NFT({ nft }) {
-  const { address, network, getTotalSupply, purchaseEdition } = web3.useContainer();
+  const {
+    address,
+    activeNetwork,
+    getTotalSupply,
+    purchaseEdition,
+  } = web3.useContainer();
   const [nftSupply, setNFTSupply] = useState(0);
   const [loading, setLoading] = useState(false); // Loading state
   const { addToast } = useToasts();
 
   const handlePurchaseWithLoading = async () => {
     setLoading(true);
-    const {result, message } = await purchaseEdition(nft.contractAddress);
+    const { result, message } = await purchaseEdition(nft.contractAddress);
     if (result) {
       addToast(message, {
         appearance: "success",
@@ -34,12 +39,11 @@ export default function NFT({ nft }) {
   const getSupply = async () => {
     let supply = await getTotalSupply(nft.contractAddress);
     setNFTSupply(supply);
-    console.log("Got supply");
   };
 
   useEffect(() => {
     getSupply();
-  });
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -59,19 +63,24 @@ export default function NFT({ nft }) {
             </h2>
           </div>
         </div>
-        {(address && network == "rinkeby") ? (
-          <button
-            onClick={() => handlePurchaseWithLoading()}
-            disabled={loading}
-          >
-            {loading ? <Spinner /> : "Purchase Edition"}
-          </button>
+        {/*  */}
+        {address ? (
+          <>
+            {activeNetwork ? (
+              <button
+                onClick={() => handlePurchaseWithLoading()}
+                disabled={loading}
+              >
+                {loading ? <Spinner /> : "Purchase Edition"}
+              </button>
+            ) : (
+              <button className={styles.nft__button_noauth} disabled={true}>
+                Wrong Network
+              </button>
+            )}
+          </>
         ) : (
-          <button
-            className={styles.nft__button_noauth}
-            onClick={() => handlePurchaseWithLoading()}
-            disabled={true}
-          >
+          <button className={styles.nft__button_noauth} disabled={true}>
             Connect Wallet
           </button>
         )}
