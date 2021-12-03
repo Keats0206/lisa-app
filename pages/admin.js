@@ -1,30 +1,55 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "../components/Layout"; // Layout
 import { web3 } from "../containers/index"; // Web3 container
 import styles from "../styles/pages/Admin.module.scss"; // Component styles
 import { editions } from "../data/editions";
-import ReactPlayer from "react-player";
+import { useToasts } from "react-toast-notifications";
+import NFTAdmin from "../components/NFTAdmin";
 
 export default function Admin() {
   const {
-    getEditionURIs,
-    purchaseEdition,
     setSalePrice,
     createEdition,
-    editionId,
   } = web3.useContainer();
   const [status, setStatus] = useState("");
-  const [display, setDisplay] = useState("");
+  const [nfts, setNFTs] = useState([]);
+  const { addToast } = useToasts();
 
   const handleCreateEdition = async () => {
     const { result, message } = await createEdition();
-    setStatus(result);
-    setDisplay(message);
+    // Add toast notification
+    if (result) {
+      addToast(message, {
+        appearance: "success",
+        autoDismiss: true,
+      });
+      setStatus(message)
+    } else {
+      addToast(message, {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
   };
 
   const setSale = async () => {
-    const salePrice = await setSalePrice();
+    const { result, message } = await setSalePrice();
+    if (result) {
+      addToast(message, {
+        appearance: "success",
+        autoDismiss: true,
+      });
+    } else {
+      addToast(message, {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
   };
+
+  useEffect(() => {
+    setNFTs(editions);
+  })
 
   return (
     <Layout>
@@ -36,31 +61,14 @@ export default function Admin() {
           Create New Edition Contract
         </button>
         <div>{status}</div>
-        <div>{display}</div>
         <h3>Existing NFT's</h3>
-
-
-
-        
-        {/* {editions.map((nft, id) => {
+        <button onClick={() => setSale()}>Set Sale Price</button>
+        {nfts.map((nft, id) => {
           return (
-            <div>
-              <ReactPlayer
-                url={nft.animationUrl}
-                controls={true}
-                width="400px"
-              />
-              <h4>{nft.name}</h4>
-              <form>
-                <label>
-                  Price:
-                  <input type="text" name="name" />
-                </label>
-                <input type="submit" value="Set Sale Price" />
-              </form>
-            </div>
+            // NFT Admin View Component
+            <NFTAdmin nft={nft} key={id} />
           );
-        })} */}
+        })}
       </div>
     </Layout>
   );

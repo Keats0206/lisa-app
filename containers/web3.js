@@ -3,7 +3,6 @@ import { ethers, providers } from "ethers"; // Ethers
 import { useState, useEffect } from "react"; // State management
 import { createContainer } from "unstated-next"; // Unstated-next containerization
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
-import { ToastProvider, useToasts } from 'react-toast-notifications';
 
 // Web3Modal provider options
 const providerOptions = {
@@ -23,7 +22,7 @@ function useWeb3() {
   const [editionId, setEditionID] = useState(null); // ETH address
   const [web3Provider, setWeb3Provider] = useState(null); // ETH address
   const [network, setNetwork] = useState(""); // Set Network
-  
+
   /**
    * Setup Web3Modal on page load (requires window)
    */
@@ -61,7 +60,7 @@ function useWeb3() {
       setSigner(signer);
       const address = await signer.getAddress();
       setAddress(address);
-    } else {      
+    } else {
       // wipe web3 auth state clean
       setWeb3Provider(null);
       setNetwork(null);
@@ -71,7 +70,7 @@ function useWeb3() {
   const createEdition = async () => {
     // const web3 = createAlchemyWeb3(API_URL);
     var contract = require("../contracts/abi/factory.json");
-    // Rinkeby address
+    // Rinkeby Edition Factory Address
     var contractAddress = "0x85FaDB8Debc0CED38d0647329fC09143d01Af660";
     // Create ethers connection to factory contract
     var factoryContract = new ethers.Contract(
@@ -93,22 +92,13 @@ function useWeb3() {
     /// @param _royaltyBPS BPS amount of royalty
 
     // var editionMetadata = {
-    //   name: "Petes First NFT",
-    //   symbol: "PETE",
-    //   description: "Petes first nft collection edition on Zora",
-    //   imageUrl:
-    //     "https://ipfs.io/ipfs/bafybeidkdpddccwhvtlliwj4kddr3xuqyrem2uszvg3pfrvdgc5kdwxqpq",
-    //   editionSize: 11,
-    //   royaltyBPS: 11,
-    // };
-
-    // var editionMetadata = {
     //   name: "Gemini",
     //   symbol: "11LIT3S",
     //   description:
     //     "Gemini nft drop from 11 LIT3S artist - part 1 of the ongoing series of 6 up coming NFT drops",
+    //   imageUrl: "https://gateway.pinata.cloud/ipfs/QmcKmyrvP5kkDaD2B8Z9mfc2zDmNMNYF3keGrmZP8YijiT",
     //   animationUrl:
-    //     "https://ipfs.io/ipfs/QmX13sSh8VqmAsgCwdMegj2ZhNQFPUbwifF944gFHhVTr8",
+    //     "https://gateway.pinata.cloud/ipfs/QmX13sSh8VqmAsgCwdMegj2ZhNQFPUbwifF944gFHhVTr8",
     //   editionSize: 11,
     //   royaltyBPS: 1000,
     // };
@@ -118,8 +108,9 @@ function useWeb3() {
       symbol: "11LIT3S",
       description:
         "Your silence nft drop from 11 LIT3S artist - part 2 of the ongoing series of 6 up coming NFT drops",
+      imageUrl: "https://gateway.pinata.cloud/ipfs/QmS4rBN9kZBwZALCWAH349sZBNbpeWgZQS8bav8sw3xx4G",
       animationUrl:
-        "https://ipfs.io/ipfs/QmSiz6WSTn4hZ6q76R1F8NUtoRuqRxfrbEHL28tsex7J4p",
+        "https://gateway.pinata.cloud/ipfs/QmSiz6WSTn4hZ6q76R1F8NUtoRuqRxfrbEHL28tsex7J4p",
       editionSize: 11,
       royaltyBPS: 1000,
     };
@@ -129,9 +120,9 @@ function useWeb3() {
         editionMetadata.name,
         editionMetadata.symbol,
         editionMetadata.description,
-        editionMetadata.animationUrl,
+        editionMetadata.imageUrl,
         "0x0000000000000000000000000000000000000000000000000000000000000000",
-        "",
+        editionMetadata.animationUrl,
         "0x0000000000000000000000000000000000000000000000000000000000000000",
         // 10% royalty
         editionMetadata.editionSize,
@@ -152,31 +143,14 @@ function useWeb3() {
     }
   };
 
-  const getEditionURIs = async () => {
-    // const minterAddress = "0xcc09cd3bc6576c28ce397d83d1dcb0e7bf149dda"
-
-    // Warhol First Address
-    // const minterAddress = "0xf02acd6b2c34ea83bd839c66b51bc7be17c18aba"
-
-    // Warhol Second Address
-    // const minterAddress = "0xe7283fe42dc876e1d8bc48c99efb54468f6d23ed"
-
-    // Warhol Third Address
-    const minterAddress = "0xaf0aef35b61705189a59374608de9100a1b96c4c";
-
-    const minterABI = require("../contracts/abi/minter.json");
-
-    const mintingContract = new ethers.Contract(
-      minterAddress,
-      minterABI.abi,
-      signer
-    );
-    // Confirm contract meta data
-    const data = await mintingContract.getURIs();
-  };
-
   const setSalePrice = async () => {
-    const minterAddress = "0xaf0aef35b61705189a59374608de9100a1b96c4c";
+
+    // Gemini Address
+    // const minterAddress = "0x1a7dffd391b21cef2ad31dea3797090e1519ebc4";
+
+    // Your Silence Address
+    const minterAddress = "0xd1f80fb19f477d51800c6f9492a0f37db1cd738a";
+
     const minterABI = require("../contracts/abi/minter.json");
 
     const mintingContract = new ethers.Contract(
@@ -188,10 +162,21 @@ function useWeb3() {
     const salePrice = ethers.utils.parseEther("0.08");
 
     try {
-      await mintingContract.setSalePrice(salePrice);
+      const tx = await mintingContract.setSalePrice(salePrice);
       console.log("Succesfully set sale price to:" + salePrice);
-    } catch {
-      console.log("Sheeeeeeeeesh");
+      return {
+        result: true,
+        message:
+          "✅ Succesfully set sale price to" +
+          salePrice +
+          "see more at https://rinkeby.etherscan.io/tx/" +
+          tx.hash,
+      };
+    } catch (error) {
+      return {
+        result: false,
+        message: "😥 Whoops, something went wrong!",
+      };
     }
   };
 
@@ -227,12 +212,21 @@ function useWeb3() {
     const salePrice = ethers.utils.parseEther("0.08");
 
     try {
-      await mintingContract.purchase({
-        value: ethers.utils.parseEther("0.08"),
+      const tx = await mintingContract.purchase({
+        value: salePrice,
       });
-      console.log("Succesfully purchased" + salePrice);
-    } catch {
-      console.log("Sheeeeeeeeesh");
+      console.log("Succesfully set sale price to:" + salePrice);
+      return {
+        result: true,
+        message:
+          "✅ Succesfully purchased NFT: See details at https://rinkeby.etherscan.io/tx/" +
+          tx.hash,
+      };
+    } catch (error) {
+      return {
+        result: false,
+        message: "😥 Whoops, something went wrong!",
+      };
     }
   };
 
@@ -252,7 +246,6 @@ function useWeb3() {
     network,
     createEdition,
     editionId,
-    getEditionURIs,
     setSalePrice,
     purchaseEdition,
     getTotalSupply,

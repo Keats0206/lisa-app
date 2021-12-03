@@ -7,7 +7,7 @@ export default function MyApp({ Component, pageProps }) {
   return (
     // Wrap page in global state provider
     <GlobalProvider>
-      <ToastProvider>
+      <ToastProvider placement="top-center">
         <ParallaxProvider>
           <Component {...pageProps} />
         </ParallaxProvider>

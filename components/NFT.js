@@ -6,15 +6,28 @@ import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
 import { Parallax } from "react-scroll-parallax";
 import ReactPlayer from "react-player";
+import { useToasts } from 'react-toast-notifications';
 
 export default function NFT({ nft }) {
   const { address, network, getTotalSupply, purchaseEdition } = web3.useContainer();
   const [nftSupply, setNFTSupply] = useState(0);
   const [loading, setLoading] = useState(false); // Loading state
+  const { addToast } = useToasts();
 
   const handlePurchaseWithLoading = async () => {
     setLoading(true);
-    await purchaseEdition(nft.contractAddress);
+    const {result, message } = await purchaseEdition(nft.contractAddress);
+    if (result) {
+      addToast(message, {
+        appearance: "success",
+        autoDismiss: true,
+      });
+    } else {
+      addToast(message, {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
     setLoading(false);
   };
 

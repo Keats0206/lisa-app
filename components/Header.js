@@ -4,14 +4,11 @@ import Spinner from "../components/Spinner";
 import { useState } from "react"; // State management
 import { web3 } from "../containers/index"; // Global state
 import styles from "../styles/components/Header.module.scss"; // Component styles
-import { useToasts } from 'react-toast-notifications';
 
 // Header
 export default function Header() {
   const [loading, setLoading] = useState(false); // Loading state
   const { address, authenticate, network } = web3.useContainer(); // Global state
-  const { addToast } = useToasts();
-
 
   const authenticateWithLoading = async () => {
     setLoading(true); // Toggle loading
@@ -23,7 +20,7 @@ export default function Header() {
     <div className={styles.header}>
       {/* Logo */}
       <div className={styles.header__logo}>
-        <Image src="/logo.jpeg" alt="Warhol Can" height={75} width={75} />
+        <Image src="/logo.png" alt="11 LIT3S Logo" height={75} width={75} />
       </div>
       {/* Menu */}
       <div className={styles.header__menu}>
