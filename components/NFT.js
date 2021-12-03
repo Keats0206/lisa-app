@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Spinner from "../components/Spinner";
 import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
-import { Parallax } from "react-scroll-parallax";
+// import { Parallax } from "react-scroll-parallax";
 import ReactPlayer from "react-player";
 import { useToasts } from "react-toast-notifications";
 
@@ -86,14 +86,14 @@ export default function NFT({ nft }) {
         )}
       </div>
       <div className={styles.media}>
-        <Parallax y={[-40, 40]}>
+        {/* <Parallax y={[-40, 40]}> */}
           <ReactPlayer
             url={nft.animationUrl}
             controls={true}
             width="100%"
             height="100%"
           />
-        </Parallax>
+        {/* </Parallax> */}
       </div>
     </div>
   );
