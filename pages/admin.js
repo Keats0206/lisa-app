@@ -49,7 +49,7 @@ export default function Admin() {
 
   useEffect(() => {
     setNFTs(editions);
-  })
+  }, [])
 
   return (
     <Layout>
@@ -61,11 +61,10 @@ export default function Admin() {
           Create New Edition Contract
         </button>
         <div>{status}</div>
-        <h3>Existing NFT's</h3>
+        <h3>Existing NFTs</h3>
         <button onClick={() => setSale()}>Set Sale Price</button>
         {nfts.map((nft, id) => {
           return (
-            // NFT Admin View Component
             <NFTAdmin nft={nft} key={id} />
           );
         })}
