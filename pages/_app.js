@@ -1,6 +1,5 @@
 import "../styles/globals.scss"; // Global styles
 import GlobalProvider from "../containers/index";
-import { ParallaxProvider } from "react-scroll-parallax";
 import { ToastProvider } from "react-toast-notifications";
 
 export default function MyApp({ Component, pageProps }) {
@@ -8,9 +7,7 @@ export default function MyApp({ Component, pageProps }) {
     // Wrap page in global state provider
     <GlobalProvider>
       <ToastProvider placement="top-center">
-        <ParallaxProvider>
           <Component {...pageProps} />
-        </ParallaxProvider>
       </ToastProvider>
     </GlobalProvider>
   );
