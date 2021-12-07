@@ -1,10 +1,7 @@
-import Head from "next/head"; // HTML Head
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import Spinner from "../components/Spinner";
 import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
-// import { Parallax } from "react-scroll-parallax";
 import ReactPlayer from "react-player";
 import { useToasts } from "react-toast-notifications";
 
@@ -16,7 +13,8 @@ export default function NFT({ nft }) {
     purchaseEdition,
   } = web3.useContainer();
   const [nftSupply, setNFTSupply] = useState(0);
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
+  const [directLink, setDirectLink] = useState(false);
   const { addToast } = useToasts();
 
   const handlePurchaseWithLoading = async () => {
@@ -36,6 +34,11 @@ export default function NFT({ nft }) {
     setLoading(false);
   };
 
+  const setDirectLinkOpenSea = async () => {
+    let url = `https://testnets.opensea.io/collection/${nft.contractAddress}`
+    setDirectLink(url);
+  }
+
   const getSupply = async () => {
     let supply = await getTotalSupply(nft.contractAddress);
     setNFTSupply(supply);
@@ -43,6 +46,7 @@ export default function NFT({ nft }) {
 
   useEffect(() => {
     getSupply();
+    setDirectLinkOpenSea();
   }, []);
 
   return (
@@ -53,13 +57,13 @@ export default function NFT({ nft }) {
         <p>{nft.description}</p>
         <div className={styles.sub_details}>
           <div>
-            <h4>Edition Price:</h4>
+            <h4>Price:</h4>
             <h2>0.08 ETH</h2>
           </div>
           <div>
-            <h4>NFTs Sold:</h4>
+            <h4>Editions Remaining:</h4>
             <h2>
-              {nftSupply} out of {nft.editionSize}
+              {nft.editionSize - nftSupply} out of {nft.editionSize}
             </h2>
           </div>
         </div>
@@ -84,6 +88,9 @@ export default function NFT({ nft }) {
             Connect Wallet
           </button>
         )}
+        <a href={directLink}>
+          <h4>View Collection on Opensea</h4>
+        </a>
       </div>
       <div className={styles.media}>
         {/* <Parallax y={[-40, 40]}> */}

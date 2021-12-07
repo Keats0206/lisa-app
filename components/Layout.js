@@ -7,10 +7,6 @@ export default function Layout({ children }, isProfile) {
     <div>
       <Header />
         <div className={styles.container}>{children}</div>
-      <div className={styles.background}>
-        <h1>11 LIT3S</h1>
-        <h3>Welcome to the 11 LIT3S Hotel NFT drop.</h3>
-      </div>
     </div>
   );
 }

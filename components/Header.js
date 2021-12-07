@@ -20,7 +20,9 @@ export default function Header() {
     <div className={styles.header}>
       {/* Logo */}
       <div className={styles.header__logo}>
-        <Image src="/logo.png" alt="11 LIT3S Logo" height={75} width={75} />
+        <a href="https://11lit3s.com/">
+          <Image src="/logo.png" alt="11 LIT3S Logo" height={75} width={75} />
+        </a>
       </div>
       {/* Menu */}
       <div className={styles.header__menu}>
