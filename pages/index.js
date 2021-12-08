@@ -10,14 +10,13 @@ export default function Home({ editions }) {
 
   return (
     <Layout>
-      <div className={styles.spacer}></div>
-      <div className={styles.blur}>
+      <div>
         {editions.map((edition, id) => {
           // Check if NFT is for sale before filtering
           return <NFT key={id} nft={edition} />;
         })}
-        <Upcoming />
       </div>
+      <Upcoming />
     </Layout>
   );
 }

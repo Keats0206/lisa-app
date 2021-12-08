@@ -33,10 +33,10 @@ export default function Header() {
                 {address == process.env.NEXT_PUBLIC_ADMIN_WALLET ? (
                   <>
                     <Link href={`/create`}>
-                      <a>Create</a>
+                      <a className={styles.header__menu_button_black}>Create</a>
                     </Link>
                     <Link href={`/admin`}>
-                      <a>Admin</a>
+                      <a className={styles.header__menu_button_black}>Admin</a>
                     </Link>
                   </>
                 ) : (

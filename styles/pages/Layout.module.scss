@@ -23,17 +23,6 @@
     font-family: 'Syne', sans-serif;
   }
 }
-
-.arrows {  
-  position: absolute;
-  display: flex;
-  width: 100vw;
-  bottom: 20px;
-  justify-content: center;
-  color: #FFFFFF;
-  text-align: center;
-}
-  
   // Responsiveness
   @media screen and (max-width: 750px) {
     .container {
