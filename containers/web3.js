@@ -89,7 +89,7 @@ function useWeb3() {
 
     var contract = require("../contracts/abi/factory.json");
     // Rinkeby Edition Factory Contract Address
-    var contractAddress = "0x85FaDB8Debc0CED38d0647329fC09143d01Af660";
+    var contractAddress = process.env.NEXT_PUBLIC_RINKEBY_FACTORY_CONTRACT;
     // Create ethers connection to factory contract
     var factoryContract = new ethers.Contract(
       contractAddress,
@@ -193,60 +193,6 @@ function useWeb3() {
     }
   };
 
-  // Modify Set Sale Price to take in Contract Address
-  const setSalePrice = async () => {
-    // Gemini Address
-    // const minterAddress = "0x1a7dffd391b21cef2ad31dea3797090e1519ebc4";
-
-    // Your Silence Address
-    const minterAddress = "0xd1f80fb19f477d51800c6f9492a0f37db1cd738a";
-
-    const minterABI = require("../contracts/abi/minter.json");
-
-    const mintingContract = new ethers.Contract(
-      minterAddress,
-      minterABI.abi,
-      signer
-    );
-
-    const salePrice = ethers.utils.parseEther("0.08");
-
-    try {
-      const tx = await mintingContract.setSalePrice(salePrice);
-      return {
-        result: true,
-        message:
-          "✅ Succesfully set sale price to" +
-          salePrice +
-          "see more at https://rinkeby.etherscan.io/tx/" +
-          tx.hash,
-      };
-    } catch (error) {
-      return {
-        result: false,
-        message: "😥 Whoops, something went wrong!",
-      };
-    }
-  };
-
-  const getTotalSupply = async (mintContractAddress) => {
-    const provider = new ethers.providers.JsonRpcProvider();
-
-    const minterABI = require("../contracts/abi/minter.json");
-
-    const mintingContract = new ethers.Contract(
-      mintContractAddress,
-      minterABI.abi,
-      infura
-    );
-
-    try {
-      let supply = await mintingContract.totalSupply();
-      return supply.toNumber();
-    } catch {
-      console.log("Couldn't get supply!");
-    }
-  };
 
   const purchaseEdition = async (mintContractAddress) => {
     const minterABI = require("../contracts/abi/minter.json");
@@ -277,6 +223,81 @@ function useWeb3() {
     }
   };
 
+
+  // Modify Set Sale Price to take in Contract Address
+  const setSalePrice = async (contractAddress, price) => {
+    const minterABI = require("../contracts/abi/minter.json");
+
+    const mintingContract = new ethers.Contract(
+      contractAddress,
+      minterABI.abi,
+      signer
+    );
+
+    const salePrice = ethers.utils.parseEther(price);
+
+    try {
+      const tx = await mintingContract.setSalePrice(salePrice);
+      return {
+        result: true,
+        message:
+          "✅ Succesfully set sale price to" +
+          salePrice +
+          "see more at https://rinkeby.etherscan.io/tx/" +
+          tx.hash,
+      };
+    } catch (error) {
+      return {
+        result: false,
+        message: "😥 Whoops, something went wrong!",
+      };
+    }
+  };
+
+  const getSalePrice = async (mintContractAddress) => {
+    const minterABI = require("../contracts/abi/minter.json");
+
+    const mintingContract = new ethers.Contract(
+      mintContractAddress,
+      minterABI.abi,
+      infura
+    );
+
+    try {
+      let price = await mintingContract.salePrice();
+      return ethers.utils.formatEther(price);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTotalSupply = async (mintContractAddress) => {
+    const minterABI = require("../contracts/abi/minter.json");
+
+    const mintingContract = new ethers.Contract(
+      mintContractAddress,
+      minterABI.abi,
+      infura
+    );
+
+    try {
+      let supply = await mintingContract.totalSupply();
+      return supply.toNumber();
+    } catch {
+      console.log("Couldn't get supply!");
+    }
+  };
+
+
+  const getContractBalance = async (contractAddress) => {
+    try {
+      const balance = await infura.getBalance(contractAddress);
+      return ethers.utils.formatEther(balance)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const checkCached = () => {
     if (modal?.cachedProvider) {
       authenticate();
@@ -297,6 +318,8 @@ function useWeb3() {
     purchaseEdition,
     getTotalSupply,
     getEditionNFTs,
+    getSalePrice,
+    getContractBalance
   };
 }
 
