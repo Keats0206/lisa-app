@@ -1,6 +1,10 @@
 .container {
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  background-color: whitesmoke;
 }
 
 .detail {
@@ -71,7 +75,6 @@
     padding: 0px 10px 20px 10px;
     display: block;
     margin-block-end: 20px;
-
   }
 
   label {

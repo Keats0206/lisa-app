@@ -63,8 +63,13 @@
   }
 
   .nft__button_noauth {
-    color: white;
+    color: gray;
     border: solid 3px red;
+  }
+
+  .nft__button_unlisted {
+    color: gray;
+    border: solid 3px green;
   }
 }
 

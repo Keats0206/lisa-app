@@ -12,7 +12,6 @@ export default function Home({ editions }) {
     <Layout>
       <div>
         {editions.map((edition, id) => {
-          // Check if NFT is for sale before filtering
           return <NFT key={id} nft={edition} />;
         })}
       </div>

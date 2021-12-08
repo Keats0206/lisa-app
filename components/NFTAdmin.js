@@ -11,6 +11,7 @@ export default function NFTAdmin({ nft }) {
     getContractBalance,
     getSalePrice,
     setSalePrice,
+    withdrawEditionBalance
   } = web3.useContainer();
 
   const [supply, setSupply] = useState("0.00");
@@ -40,6 +41,23 @@ export default function NFTAdmin({ nft }) {
   const handleGetContractBalance= async () => {
     let eth = await getContractBalance(nft.contractAddress);
     setValueInContract(eth);
+  };
+
+  const handleWithdrawETH= async () => {
+    setLoading(true);
+    const { result, message } = await withdrawEditionBalance(nft.contractAddress);
+    if (result) {
+      addToast(message, {
+        appearance: "success",
+        autoDismiss: true,
+      });
+    } else {
+      addToast(message, {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
+    setLoading(false);
   };
 
   const handleGetPrice = async () => {
@@ -80,7 +98,7 @@ export default function NFTAdmin({ nft }) {
         <div>
           <div className={styles.action_form}>
             <div>
-              <h4>Set or Change Sale Price</h4>
+              <h4>Set or change sale price:</h4>
               <label htmlFor="newPrice">
                 Price{" "}
                 <span className={styles.create__upload_required}>(ETH)</span>
@@ -100,27 +118,23 @@ export default function NFTAdmin({ nft }) {
                 !newPrice // No New Price provided
               }
               >
-                Update Sale Price
+                {loading ? <Spinner /> : "Update Sale Price"}
               </button>
             </div>
             <div>
-              <h4>With draw from contract</h4>
+              <h4>Withdraw from contract:</h4>
               <h3>
                 Amount Available: {valueInContract} ETH
               </h3>
               <span className={styles.create__upload_required}>Only the contract owner can withdraw these funds</span>
               <button 
-              onClick={() => handleGetContractBalance()}
-              // onClick={() => handleWithdrawETH()}
+                onClick={() => handleWithdrawETH()}
               >
-                Withdraw ETH
+                {loading ? <Spinner /> : "Withdraw ETH"}
               </button>
             </div>
           </div>
-          {/* <div>
-          Amonut in Contract: {valueInContract}
-          <button>Withdraw Amount</button>
-        </div> */}
+
         </div>
       </div>
       <div className={styles.media}>

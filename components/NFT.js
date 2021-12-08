@@ -14,14 +14,17 @@ export default function NFT({ nft }) {
     getSalePrice,
   } = web3.useContainer();
   const [supply, setSupply] = useState(0);
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(null);
   const [loading, setLoading] = useState(false);
   const [directLink, setDirectLink] = useState(false);
   const { addToast } = useToasts();
 
   const handlePurchaseWithLoading = async () => {
     setLoading(true);
-    const { result, message } = await purchaseEdition(nft.contractAddress);
+    const { result, message } = await purchaseEdition(
+      nft.contractAddress,
+      price
+    );
     if (result) {
       addToast(message, {
         appearance: "success",
@@ -67,7 +70,11 @@ export default function NFT({ nft }) {
         <div className={styles.sub_details}>
           <div>
             <h4>Price:</h4>
-            <h2>{price} ETH</h2>
+            {price > 0 ? (
+               <h2>{price} ETH</h2>
+            ) : (
+              <h2>Unlisted</h2>
+            )}
           </div>
           <div>
             <h4>Editions Remaining:</h4>
@@ -76,30 +83,39 @@ export default function NFT({ nft }) {
             </h2>
           </div>
         </div>
-        {/*  */}
-        {address ? (
+        {price > 0 ? (
           <>
-            {activeNetwork ? (
-              <button
-                onClick={() => handlePurchaseWithLoading()}
-                disabled={loading}
-              >
-                {loading ? <Spinner /> : "Purchase Edition"}
-              </button>
+            {address ? (
+              <>
+                {activeNetwork ? (
+                  <button
+                    onClick={() => handlePurchaseWithLoading()}
+                    disabled={loading}
+                  >
+                    {loading ? <Spinner /> : "Purchase Edition"}
+                  </button>
+                ) : (
+                  <button className={styles.nft__button_noauth} disabled={true}>
+                    Wrong Network
+                  </button>
+                )}
+              </>
             ) : (
               <button className={styles.nft__button_noauth} disabled={true}>
-                Wrong Network
+                Connect Wallet
               </button>
             )}
           </>
         ) : (
-          <button className={styles.nft__button_noauth} disabled={true}>
-            Connect Wallet
-          </button>
+          <>
+            <button className={styles.nft__button_unlisted} disabled={true}>
+              Not For Sale
+            </button>
+          </>
         )}
         <a>
           {/* <a href={directLink}> */}
-          <h4>View Collection on Opensea</h4>
+          {/* <h4>View Collection on Opensea</h4> */}
         </a>
       </div>
       <div className={styles.media_container}>
