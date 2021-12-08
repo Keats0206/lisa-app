@@ -1,3 +1,32 @@
+// Dynamic Data Fetching of NFT Metadata
+
+// Fetch array of contractAddresses from supabase file
+
+// import { fetchEditionsArray } from "../data/subabase";
+
+// export const getNFTEditions = async () => {
+//   const { fetchEditionMetadata } = web3.useContainer();
+//   const [nfts, setNFTs] = useState([]);
+
+//   try {
+//     const contractAddresses = await fetchEditionsArray();
+
+//     for (let i = 0; i < contractAddresses.length; i++) {
+//       try {
+//         const res = await fetchEditionMetadata(contractAddresses);
+//         // - Sanitize data into an nft object
+//         // - Store NFT in state variable
+//         console.log(res);
+//       } catch (error) {
+//         console.log("error");
+//       }
+//     }
+//   } catch (error) {
+//     console.log("error");
+//   }
+//   return nfts;
+// };
+
 let gemini = {
   contractAddress: "0x1a7dffd391b21cef2ad31dea3797090e1519ebc4",
   name: "Gemini",

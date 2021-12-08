@@ -44,6 +44,7 @@ export default function NFT({ nft }) {
     setNFTSupply(supply);
   };
 
+  // Move this stuff to server side
   useEffect(() => {
     getSupply();
     setDirectLinkOpenSea();
@@ -88,7 +89,8 @@ export default function NFT({ nft }) {
             Connect Wallet
           </button>
         )}
-        <a href={directLink}>
+        <a>
+        {/* <a href={directLink}> */}
           <h4>View Collection on Opensea</h4>
         </a>
       </div>

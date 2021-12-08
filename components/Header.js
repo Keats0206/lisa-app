@@ -29,20 +29,34 @@ export default function Header() {
         {address ? (
           <>
             {activeNetwork ? (
-              <button className={styles.header__menu_button_gray}>
-                {address.substr(0, 5) +
-                  "..." +
-                  address.slice(address.length - 5)}
-              </button>
-            ) : (   
-              <>       
-              <button 
-                className={styles.header__menu_button_red} 
-                disabled={true}
-              >
-                Wrong Network
-              </button>
-              </>    
+              <>
+                {address == process.env.NEXT_PUBLIC_ADMIN_WALLET ? (
+                  <>
+                    <Link href={`/create`}>
+                      <a>Create</a>
+                    </Link>
+                    <Link href={`/admin`}>
+                      <a>Admin</a>
+                    </Link>
+                  </>
+                ) : (
+                  <></>
+                )}
+                <button className={styles.header__menu_button_gray}>
+                  {address.substr(0, 5) +
+                    "..." +
+                    address.slice(address.length - 5)}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className={styles.header__menu_button_red}
+                  disabled={true}
+                >
+                  Wrong Network
+                </button>
+              </>
             )}
           </>
         ) : (

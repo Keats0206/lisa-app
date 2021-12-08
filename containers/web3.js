@@ -3,6 +3,7 @@ import { ethers, providers } from "ethers"; // Ethers
 import { useState, useEffect } from "react"; // State management
 import { createContainer } from "unstated-next"; // Unstated-next containerization
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
+import { createEditionSupabase } from "../data/supabase";
 
 // Web3Modal provider options
 const providerOptions = {
@@ -54,8 +55,7 @@ function useWeb3() {
     setSigner(signer);
     const address = await signer.getAddress();
     setAddress(address);
-    const network = await provider.getNetwork(); 
-    console.log(network)
+    const network = await provider.getNetwork();
     if (network.name == "rinkeby") {
       setActiveNetwork(true);
     } else {
@@ -70,86 +70,115 @@ function useWeb3() {
       // Generate ethers provider
       const provider = new providers.Web3Provider(web3Provider);
       setWeb3Provider(provider);
-      const network = provider.getNetwork(); 
-      console.log("Got the network");
-      console.log(network);
+      const network = provider.getNetwork();
       if (network.name == "rinkeby") {
         setActiveNetwork(true);
-        console.log("Set activeNetwork to true")
       } else {
         setActiveNetwork(false);
-        console.log("Set activeNetwork to false")
       }
     } else {
-      console.log("not authenticated")
+      console.log("Error checking chain");
     }
-  }
+  };
 
-    useEffect(checkChain, []);
+  useEffect(checkChain, []);
 
+  // Works but is missing the name, symbol and description
+  const getEditionNFTs = async () => {
+    const nfts = [];
 
-  const createEdition = async () => {
+    var contract = require("../contracts/abi/factory.json");
+    // Rinkeby Edition Factory Contract Address
+    var contractAddress = "0x85FaDB8Debc0CED38d0647329fC09143d01Af660";
+    // Create ethers connection to factory contract
+    var factoryContract = new ethers.Contract(
+      contractAddress,
+      contract.abi,
+      signer // Switch to a fixed address for the 11 LIT3S team
+    );
+
+    const eventFilter = factoryContract.filters.CreatedEdition(null, address);
+    const events = await factoryContract.queryFilter(eventFilter);
+
+    const contractAddresses = [];
+
+    for (let i = 0; i < events.length; i++) {
+      contractAddresses.push(events[i].args.editionContractAddress);
+    }
+
+    return contractAddresses;
+  };
+
+  /// @param _name Name of the edition contract
+  /// @param _symbol Symbol of the edition contract
+  /// @param _description Metadata: Description of the edition entry
+  /// @param _animationUrl Metadata: Animation url (optional) of the edition entry
+  /// @param _animationHash Metadata: SHA-256 Hash of the animation (if no animation url, can be 0x0)
+  /// @param _imageUrl Metadata: Image url (semi-required) of the edition entry
+  /// @param _imageHash Metadata: SHA-256 hash of the Image of the edition entry (if not image, can be 0x0)
+  /// @param _editionSize Total size of the edition (number of possible editions)
+  /// @param _royaltyBPS BPS amount of royalty (10 = 10%) multiply by 100 in call
+
+  const createEdition = async (
+    name,
+    symbol,
+    description,
+    previewImageUrl,
+    animationUrl,
+    editionSize,
+    royaltyBPS
+  ) => {
     // const web3 = createAlchemyWeb3(API_URL);
     var contract = require("../contracts/abi/factory.json");
-    // Rinkeby Edition Factory Address
+    // Rinkeby Edition Factory Contract Address
     var contractAddress = "0x85FaDB8Debc0CED38d0647329fC09143d01Af660";
     // Create ethers connection to factory contract
     var factoryContract = new ethers.Contract(
       contractAddress,
       contract.abi,
       signer
-  );
+    );
+
+    // Adjusting royalty BPS by factor of 100. 1000 passed into the function below equals 10% royalty.
+    const adjustedRoyalty = royaltyBPS * 100;
 
     // Set up metadata of Edition:
-
-    /// @param _name Name of the edition contract
-    /// @param _symbol Symbol of the edition contract
-    /// @param _description Metadata: Description of the edition entry
-    /// @param _animationUrl Metadata: Animation url (optional) of the edition entry
-    /// @param _animationHash Metadata: SHA-256 Hash of the animation (if no animation url, can be 0x0)
-    /// @param _imageUrl Metadata: Image url (semi-required) of the edition entry
-    /// @param _imageHash Metadata: SHA-256 hash of the Image of the edition entry (if not image, can be 0x0)
-    /// @param _editionSize Total size of the edition (number of possible editions)
-    /// @param _royaltyBPS BPS amount of royalty
-
-    // var editionMetadata = {
-    //   name: "Gemini",
-    //   symbol: "11LIT3S",
-    //   description:
-    //     "Gemini nft drop from 11 LIT3S artist - part 1 of the ongoing series of 6 up coming NFT drops",
-    //   imageUrl: "https://gateway.pinata.cloud/ipfs/QmcKmyrvP5kkDaD2B8Z9mfc2zDmNMNYF3keGrmZP8YijiT",
-    //   animationUrl:
-    //     "https://gateway.pinata.cloud/ipfs/QmX13sSh8VqmAsgCwdMegj2ZhNQFPUbwifF944gFHhVTr8",
-    //   editionSize: 11,
-    //   royaltyBPS: 1000,
-    // };
-
-    var editionMetadata = {
-      name: "Your Silence",
-      symbol: "11LIT3S",
-      description:
-        "Your silence nft drop from 11 LIT3S artist - part 2 of the ongoing series of 6 up coming NFT drops",
-      imageUrl: "https://gateway.pinata.cloud/ipfs/QmS4rBN9kZBwZALCWAH349sZBNbpeWgZQS8bav8sw3xx4G",
-      animationUrl:
-        "https://gateway.pinata.cloud/ipfs/QmSiz6WSTn4hZ6q76R1F8NUtoRuqRxfrbEHL28tsex7J4p",
-      editionSize: 11,
-      royaltyBPS: 1000,
-    };
-
     try {
+
       const tx = await factoryContract.createEdition(
-        editionMetadata.name,
-        editionMetadata.symbol,
-        editionMetadata.description,
-        editionMetadata.imageUrl,
+        name,
+        symbol,
+        description,
+        previewImageUrl,
         "0x0000000000000000000000000000000000000000000000000000000000000000",
-        editionMetadata.animationUrl,
+        animationUrl,
         "0x0000000000000000000000000000000000000000000000000000000000000000",
-        // 10% royalty
-        editionMetadata.editionSize,
-        editionMetadata.royaltyBPS
+        editionSize,
+        adjustedRoyalty
       );
-      console.log(tx);
+
+      // Get the latest edition event
+      const eventFilter = factoryContract.filters.CreatedEdition(null, address);
+      const events = await factoryContract.queryFilter(eventFilter);
+
+      // Contract address of most recent event deployed by the user
+      let latestEditionAddress = events[events.length - 1].args.editionContractAddress
+
+      // Send that contract and metadata into the supabase DB
+      await createEditionSupabase(
+        latestEditionAddress, 
+        name,
+        symbol,
+        description, 
+        previewImageUrl,
+        animationUrl,
+        editionSize,
+        royaltyBPS,
+        adjustedRoyalty
+      )
+
+      // Fetch from the supabase DB for the UI
+
       return {
         result: true,
         message:
@@ -164,8 +193,8 @@ function useWeb3() {
     }
   };
 
+  // Modify Set Sale Price to take in Contract Address
   const setSalePrice = async () => {
-
     // Gemini Address
     // const minterAddress = "0x1a7dffd391b21cef2ad31dea3797090e1519ebc4";
 
@@ -184,7 +213,6 @@ function useWeb3() {
 
     try {
       const tx = await mintingContract.setSalePrice(salePrice);
-      console.log("Succesfully set sale price to:" + salePrice);
       return {
         result: true,
         message:
@@ -214,7 +242,6 @@ function useWeb3() {
 
     try {
       let supply = await mintingContract.totalSupply();
-      console.log(supply);
       return supply.toNumber();
     } catch {
       console.log("Couldn't get supply!");
@@ -236,7 +263,6 @@ function useWeb3() {
       const tx = await mintingContract.purchase({
         value: salePrice,
       });
-      console.log("Succesfully set sale price to:" + salePrice);
       return {
         result: true,
         message:
@@ -270,6 +296,7 @@ function useWeb3() {
     setSalePrice,
     purchaseEdition,
     getTotalSupply,
+    getEditionNFTs,
   };
 }
 
