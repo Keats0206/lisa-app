@@ -1,12 +1,12 @@
-import Image from "next/image"; // HTML Head
 import Header from "../components/Header"; // Header component
 import styles from "../styles/pages/Layout.module.scss"; // Component styles
-import Upcoming from "./Upcoming";
 
-export default function Layout({ children }, isProfile) {
+export default function Layout({ children }) {
   return (
     <div>
+      {/* Header */}
       <Header />
+      {/* Content Container */}
       <div className={styles.container}>{children}</div>
     </div>
   );

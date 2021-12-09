@@ -63,6 +63,7 @@ export default function NFT({ nft }) {
 
   return (
     <div className={styles.container}>
+      {/* NFT Detail Container */}
       <div className={styles.detail}>
         <h1>{nft.name}</h1>
         <h3>{nft.symbol}</h3>
@@ -83,6 +84,7 @@ export default function NFT({ nft }) {
             </h2>
           </div>
         </div>
+        {/* Check if NFT has been listed for sale */}
         {price > 0 ? (
           <>
             {address ? (
@@ -108,6 +110,7 @@ export default function NFT({ nft }) {
           </>
         ) : (
           <>
+            {/* Show not for sale button */}
             <button className={styles.nft__button_unlisted} disabled={true}>
               Not For Sale
             </button>

@@ -14,16 +14,16 @@ export default function NFTAdmin({ nft }) {
     withdrawEditionBalance
   } = web3.useContainer();
 
-  const [supply, setSupply] = useState("0.00");
-  const [price, setPrice] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [directLink, setDirectLink] = useState(false);
-  const [newPrice, setNewPrice] = useState(0);
-  const [valueInContract, setValueInContract] = useState("");
+  const [supply, setSupply] = useState(0); // NFT remainging edition supply
+  const [price, setPrice] = useState(0); // NFT edition price
+  const [loading, setLoading] = useState(false); // Loading state
+  // const [directLink, setDirectLink] = useState(false);
+  const [newPrice, setNewPrice] = useState(0); // Price for changed / set NFT edition Price
+  const [valueInContract, setValueInContract] = useState(""); // Eth amount available to Admin
   const { addToast } = useToasts();
 
-  const handleSetChangePrice = async () => {
-    const { result, message } = await setSalePrice(nft.contractAddress, newPrice);
+  // Creating toast alerts on success
+  const createToastAlert = async (result, message) => {
     if (result) {
       addToast(message, {
         appearance: "success",
@@ -35,7 +35,12 @@ export default function NFTAdmin({ nft }) {
         autoDismiss: true,
       });
     }
-    setNewPrice(0)
+  }
+
+  const handleSetChangePrice = async () => {
+    const { result, message } = await setSalePrice(nft.contractAddress, newPrice);
+    createToastAlert(result, message);
+    setNewPrice(0);
   };
 
   const handleGetContractBalance= async () => {
@@ -46,17 +51,7 @@ export default function NFTAdmin({ nft }) {
   const handleWithdrawETH= async () => {
     setLoading(true);
     const { result, message } = await withdrawEditionBalance(nft.contractAddress);
-    if (result) {
-      addToast(message, {
-        appearance: "success",
-        autoDismiss: true,
-      });
-    } else {
-      addToast(message, {
-        appearance: "error",
-        autoDismiss: true,
-      });
-    }
+    createToastAlert(result, message);
     setLoading(false);
   };
 

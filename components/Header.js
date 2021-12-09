@@ -26,10 +26,13 @@ export default function Header() {
       </div>
       {/* Menu */}
       <div className={styles.header__menu}>
+        {/* Is user authenicated? */}
         {address ? (
           <>
+            {/* Is user on the correct network, set in the .env file & web3 container */}
             {activeNetwork ? (
               <>
+                {/* Is user the admin */}
                 {address == process.env.NEXT_PUBLIC_ADMIN_WALLET ? (
                   <>
                     <Link href={`/create`}>
@@ -42,6 +45,7 @@ export default function Header() {
                 ) : (
                   <></>
                 )}
+                {/* Show authenticated address  */}
                 <button className={styles.header__menu_button_gray}>
                   {address.substr(0, 5) +
                     "..." +
@@ -50,6 +54,7 @@ export default function Header() {
               </>
             ) : (
               <>
+              {/* Show Wrong Network Button */}
                 <button
                   className={styles.header__menu_button_red}
                   disabled={true}
