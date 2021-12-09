@@ -1,0 +1,54 @@
+.container {
+  position: relative;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.mirror_link {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  
+  a {
+    padding: 10px 30px 0px 0px;
+    color: black;
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.social_links {
+  display: flex;
+
+  a {
+    padding: 10px 0px 0px 30px;
+  }
+}
+
+.detail {
+  h2 {
+    font-size: 20px;
+  }
+}
+
+// Responsiveness
+@media screen and (max-width: 600px) {
+  .mirror_link {   
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+
+    a {
+      padding: 10px 30px 0px 0px;
+      color: black;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+}
+
+

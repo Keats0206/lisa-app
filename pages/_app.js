@@ -7,7 +7,7 @@ export default function MyApp({ Component, pageProps }) {
   return (
     // Wrap page in global state provider
     <GlobalProvider>
-        <ToastProvider placement="top-center">
+        <ToastProvider placement="bottom-center">
             <Component {...pageProps} />
         </ToastProvider>
     </GlobalProvider>

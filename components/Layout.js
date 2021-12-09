@@ -1,12 +1,15 @@
-import Image from "next/image"; // HTML Head
 import Header from "../components/Header"; // Header component
+import Footer from "../components/Footer"; // Header component
 import styles from "../styles/pages/Layout.module.scss"; // Component styles
 
-export default function Layout({ children }, isProfile) {
+export default function Layout({ children }) {
   return (
     <div>
+      {/* Header */}
       <Header />
-        <div className={styles.container}>{children}</div>
+      {/* Content Container */}
+      <div className={styles.container}>{children}</div>
+      <Footer />
     </div>
   );
 }

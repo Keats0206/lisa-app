@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^1.28.5",
     "@walletconnect/web3-provider": "^1.6.6",
     "dropzone": "^6.0.0-beta.2",
     "ethers": "^5.5.1",

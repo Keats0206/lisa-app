@@ -20,29 +20,48 @@ export default function Header() {
     <div className={styles.header}>
       {/* Logo */}
       <div className={styles.header__logo}>
-        <a href="https://11lit3s.com/">
-          <Image src="/logo.png" alt="11 LIT3S Logo" height={75} width={75} />
-        </a>
+        <Link href="/">
+          <Image src="/logo.png" alt="11 LIT3S Logo" height={60} width={60} />
+        </Link>
       </div>
       {/* Menu */}
       <div className={styles.header__menu}>
+        {/* Is user authenicated? */}
         {address ? (
           <>
+            {/* Is user on the correct network, set in the .env file & web3 container */}
             {activeNetwork ? (
-              <button className={styles.header__menu_button_gray}>
-                {address.substr(0, 5) +
-                  "..." +
-                  address.slice(address.length - 5)}
-              </button>
-            ) : (   
-              <>       
-              <button 
-                className={styles.header__menu_button_red} 
-                disabled={true}
-              >
-                Wrong Network
-              </button>
-              </>    
+              <>
+                {/* Is user the admin */}
+                {address == process.env.NEXT_PUBLIC_ADMIN_WALLET ? (
+                  <>
+                    <Link href={`/create`}>
+                      <a className={styles.header__menu_button_black}>Create</a>
+                    </Link>
+                    <Link href={`/admin`}>
+                      <a className={styles.header__menu_button_black}>Admin</a>
+                    </Link>
+                  </>
+                ) : (
+                  <></>
+                )}
+                {/* Show authenticated address  */}
+                <button className={styles.header__menu_button_gray}>
+                  {address.substr(0, 5) +
+                    "..." +
+                    address.slice(address.length - 5)}
+                </button>
+              </>
+            ) : (
+              <>
+              {/* Show Wrong Network Button */}
+                <button
+                  className={styles.header__menu_button_red}
+                  disabled={true}
+                >
+                  Wrong Network
+                </button>
+              </>
             )}
           </>
         ) : (

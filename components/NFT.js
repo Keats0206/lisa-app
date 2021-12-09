@@ -9,17 +9,19 @@ export default function NFT({ nft }) {
   const {
     address,
     activeNetwork,
-    getTotalSupply,
     purchaseEdition,
   } = web3.useContainer();
-  const [nftSupply, setNFTSupply] = useState(0);
+
   const [loading, setLoading] = useState(false);
   const [directLink, setDirectLink] = useState(false);
   const { addToast } = useToasts();
 
   const handlePurchaseWithLoading = async () => {
     setLoading(true);
-    const { result, message } = await purchaseEdition(nft.contractAddress);
+    const { result, message } = await purchaseEdition(
+      nft.contractAddress,
+      nft.salePrice
+    );
     if (result) {
       addToast(message, {
         appearance: "success",
@@ -35,22 +37,17 @@ export default function NFT({ nft }) {
   };
 
   const setDirectLinkOpenSea = async () => {
-    let url = `https://testnets.opensea.io/collection/${nft.contractAddress}`
+    let url = `https://testnets.opensea.io/collection/${nft.contractAddress}`;
     setDirectLink(url);
-  }
-
-  const getSupply = async () => {
-    let supply = await getTotalSupply(nft.contractAddress);
-    setNFTSupply(supply);
   };
 
   useEffect(() => {
-    getSupply();
     setDirectLinkOpenSea();
   }, []);
 
   return (
     <div className={styles.container}>
+      {/* NFT Detail Container */}
       <div className={styles.detail}>
         <h1>{nft.name}</h1>
         <h3>{nft.symbol}</h3>
@@ -58,48 +55,67 @@ export default function NFT({ nft }) {
         <div className={styles.sub_details}>
           <div>
             <h4>Price:</h4>
-            <h2>0.08 ETH</h2>
+            {nft.salePrice > 0 ? (
+               <h2>{nft.salePrice} ETH</h2>
+            ) : (
+              <h2>Unlisted</h2>
+            )}
           </div>
           <div>
             <h4>Editions Remaining:</h4>
             <h2>
-              {nft.editionSize - nftSupply} out of {nft.editionSize}
+              {nft.editionSize - nft.totalSupply} out of {nft.editionSize}
             </h2>
           </div>
         </div>
-        {/*  */}
-        {address ? (
+        {/* Check if NFT has been listed for sale */}
+        {nft.salePrice > 0 ? (
           <>
-            {activeNetwork ? (
-              <button
-                onClick={() => handlePurchaseWithLoading()}
-                disabled={loading}
-              >
-                {loading ? <Spinner /> : "Purchase Edition"}
-              </button>
+            {address ? (
+              <>
+                {activeNetwork ? (
+                  <button
+                    onClick={() => handlePurchaseWithLoading()}
+                    disabled={loading}
+                  >
+                    {loading ? <Spinner /> : "Purchase Edition"}
+                  </button>
+                ) : (
+                  <button className={styles.nft__button_noauth} disabled={true}>
+                    Wrong Network
+                  </button>
+                )}
+              </>
             ) : (
               <button className={styles.nft__button_noauth} disabled={true}>
-                Wrong Network
+                Connect Wallet
               </button>
             )}
           </>
         ) : (
-          <button className={styles.nft__button_noauth} disabled={true}>
-            Connect Wallet
-          </button>
+          <>
+            {/* Show not for sale button */}
+            <button className={styles.nft__button_unlisted} disabled={true}>
+              Not For Sale
+            </button>
+          </>
         )}
-        <a href={directLink}>
-          <h4>View Collection on Opensea</h4>
+        <a>
+          {/* <a href={directLink}> */}
+          {/* <h4>View Collection on Opensea</h4> */}
         </a>
       </div>
-      <div className={styles.media}>
-        {/* <Parallax y={[-40, 40]}> */}
+      <div className={styles.media_container}>
+        <div className={styles.media}>
+          {/* <Parallax y={[-40, 40]}> */}
           <ReactPlayer
-            url={nft.animationUrl}
+            url={nft.uris[0]}
             controls={true}
             width="100%"
             height="100%"
           />
+        </div>
+
         {/* </Parallax> */}
       </div>
     </div>

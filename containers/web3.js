@@ -3,6 +3,7 @@ import { ethers, providers } from "ethers"; // Ethers
 import { useState, useEffect } from "react"; // State management
 import { createContainer } from "unstated-next"; // Unstated-next containerization
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
+import {editions} from "../data/editions"
 
 // Web3Modal provider options
 const providerOptions = {
@@ -22,6 +23,8 @@ function useWeb3() {
   const [editionId, setEditionID] = useState(null); // ETH address
   const [web3Provider, setWeb3Provider] = useState(null); // ETH address
   const [activeNetwork, setActiveNetwork] = useState(""); // Set Network
+
+  const minterABI = require("../contracts/abi/minter.json");
 
   /**
    * Setup Web3Modal on page load (requires window)
@@ -54,8 +57,7 @@ function useWeb3() {
     setSigner(signer);
     const address = await signer.getAddress();
     setAddress(address);
-    const network = await provider.getNetwork(); 
-    console.log(network)
+    const network = await provider.getNetwork();
     if (network.name == "rinkeby") {
       setActiveNetwork(true);
     } else {
@@ -70,140 +72,216 @@ function useWeb3() {
       // Generate ethers provider
       const provider = new providers.Web3Provider(web3Provider);
       setWeb3Provider(provider);
-      const network = provider.getNetwork(); 
-      console.log("Got the network");
-      console.log(network);
+      const network = provider.getNetwork();
       if (network.name == "rinkeby") {
         setActiveNetwork(true);
-        console.log("Set activeNetwork to true")
       } else {
         setActiveNetwork(false);
-        console.log("Set activeNetwork to false")
       }
     } else {
-      console.log("not authenticated")
+      console.log("Error checking chain");
     }
-  }
+  };
 
-    useEffect(checkChain, []);
+  useEffect(checkChain, []);
 
+  // // Works but is missing the name, symbol and description
+  const fetchEditionsCreator = async (creatorAddress) => {
+    const editionNFTs = [];
+    var contract = require("../contracts/abi/factory.json");
+    // Rinkeby Edition Factory Contract Address
+    var contractAddress = process.env.NEXT_PUBLIC_RINKEBY_FACTORY_CONTRACT;
+    // Create ethers connection to factory contract
+    var factoryContract = new ethers.Contract(
+      contractAddress,
+      contract.abi,
+      infura // Switch to a fixed address for the 11 LIT3S team
+    );
 
-  const createEdition = async () => {
+    const eventFilter = factoryContract.filters.CreatedEdition(
+      null,
+      creatorAddress
+    );
+
+    const events = await factoryContract.queryFilter(eventFilter);
+
+    // Returns a single NFT, useful for testing
+    
+    // const editionAddress = events[1].args.editionContractAddress;
+    // var edition = await createNFTfromContractAddress(editionAddress);
+    // editionNFTs.push(edition);
+
+    for (let i = 0; i < events.length; i++) {
+      // for each contract address call the create nft function
+      const editionAddress = events[i].args.editionContractAddress;
+      var edition = await createNFTfromContractAddress(editionAddress);
+      editionNFTs.push(edition);
+    }
+
+    return editionNFTs;
+  };
+
+  const createNFTfromContractAddress = async (contractAddress) => {
+    var editionContract = new ethers.Contract(
+      contractAddress,
+      minterABI.abi,
+      infura
+    );
+
+    try {
+      const name = await editionContract.name();
+      const symbol = await editionContract.symbol();
+      // const description = await editionContract.description(); //No getter for description at the moment
+      // Supplementing description with manual data for now
+      const description = name == "Gemini" ? editions[0].description : editions[1].description
+      const owner = await editionContract.owner();
+      const salePrice = await editionContract.salePrice();
+      const editionSize = await editionContract.editionSize();
+      const uris = await editionContract.getURIs(); // array of content URIs
+      const totalSupply = await editionContract.totalSupply();
+
+      let nftEdition = {
+        contractAddress: contractAddress,
+        name: name,
+        symbol: symbol,
+        description: description,
+        owner: owner,
+        salePrice: ethers.utils.formatEther(salePrice),
+        editionSize: editionSize.toString(),
+        uris: uris, // array of content URIs
+        totalSupply: totalSupply.toString(),
+      };
+      return nftEdition;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /// @param _name Name of the edition contract
+  /// @param _symbol Symbol of the edition contract
+  /// @param _description Metadata: Description of the edition entry
+  /// @param _animationUrl Metadata: Animation url (optional) of the edition entry
+  /// @param _animationHash Metadata: SHA-256 Hash of the animation (if no animation url, can be 0x0)
+  /// @param _imageUrl Metadata: Image url (semi-required) of the edition entry
+  /// @param _imageHash Metadata: SHA-256 hash of the Image of the edition entry (if not image, can be 0x0)
+  /// @param _editionSize Total size of the edition (number of possible editions)
+  /// @param _royaltyBPS BPS amount of royalty (10 = 10%) multiply by 100 in call
+
+  const createEdition = async (
+    name,
+    symbol,
+    description,
+    previewImageUrl,
+    animationUrl,
+    editionSize,
+    royaltyBPS
+  ) => {
     // const web3 = createAlchemyWeb3(API_URL);
     var contract = require("../contracts/abi/factory.json");
-    // Rinkeby Edition Factory Address
+    // Rinkeby Edition Factory Contract Address
     var contractAddress = "0x85FaDB8Debc0CED38d0647329fC09143d01Af660";
     // Create ethers connection to factory contract
     var factoryContract = new ethers.Contract(
       contractAddress,
       contract.abi,
       signer
-  );
+    );
+
+    // Adjusting royalty BPS by factor of 100. 1000 passed into the function below equals 10% royalty.
+    const adjustedRoyalty = royaltyBPS * 100;
 
     // Set up metadata of Edition:
-
-    /// @param _name Name of the edition contract
-    /// @param _symbol Symbol of the edition contract
-    /// @param _description Metadata: Description of the edition entry
-    /// @param _animationUrl Metadata: Animation url (optional) of the edition entry
-    /// @param _animationHash Metadata: SHA-256 Hash of the animation (if no animation url, can be 0x0)
-    /// @param _imageUrl Metadata: Image url (semi-required) of the edition entry
-    /// @param _imageHash Metadata: SHA-256 hash of the Image of the edition entry (if not image, can be 0x0)
-    /// @param _editionSize Total size of the edition (number of possible editions)
-    /// @param _royaltyBPS BPS amount of royalty
-
-    // var editionMetadata = {
-    //   name: "Gemini",
-    //   symbol: "11LIT3S",
-    //   description:
-    //     "Gemini nft drop from 11 LIT3S artist - part 1 of the ongoing series of 6 up coming NFT drops",
-    //   imageUrl: "https://gateway.pinata.cloud/ipfs/QmcKmyrvP5kkDaD2B8Z9mfc2zDmNMNYF3keGrmZP8YijiT",
-    //   animationUrl:
-    //     "https://gateway.pinata.cloud/ipfs/QmX13sSh8VqmAsgCwdMegj2ZhNQFPUbwifF944gFHhVTr8",
-    //   editionSize: 11,
-    //   royaltyBPS: 1000,
-    // };
-
-    var editionMetadata = {
-      name: "Your Silence",
-      symbol: "11LIT3S",
-      description:
-        "Your silence nft drop from 11 LIT3S artist - part 2 of the ongoing series of 6 up coming NFT drops",
-      imageUrl: "https://gateway.pinata.cloud/ipfs/QmS4rBN9kZBwZALCWAH349sZBNbpeWgZQS8bav8sw3xx4G",
-      animationUrl:
-        "https://gateway.pinata.cloud/ipfs/QmSiz6WSTn4hZ6q76R1F8NUtoRuqRxfrbEHL28tsex7J4p",
-      editionSize: 11,
-      royaltyBPS: 1000,
-    };
-
     try {
       const tx = await factoryContract.createEdition(
-        editionMetadata.name,
-        editionMetadata.symbol,
-        editionMetadata.description,
-        editionMetadata.imageUrl,
+        name,
+        symbol,
+        description,
+        previewImageUrl,
         "0x0000000000000000000000000000000000000000000000000000000000000000",
-        editionMetadata.animationUrl,
+        animationUrl,
         "0x0000000000000000000000000000000000000000000000000000000000000000",
-        // 10% royalty
-        editionMetadata.editionSize,
-        editionMetadata.royaltyBPS
+        editionSize,
+        adjustedRoyalty
       );
-      console.log(tx);
       return {
         result: true,
         message:
-          "✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" +
-          tx.hash,
+          "Succesfully created edition, set a price for the NFT to be purchased!",
       };
     } catch (error) {
       return {
         result: false,
-        message: "😥 Something went wrong: " + error.message,
+        message: "Transaction failed, try again!",
       };
     }
   };
 
-  const setSalePrice = async () => {
-
-    // Gemini Address
-    // const minterAddress = "0x1a7dffd391b21cef2ad31dea3797090e1519ebc4";
-
-    // Your Silence Address
-    const minterAddress = "0xd1f80fb19f477d51800c6f9492a0f37db1cd738a";
-
-    const minterABI = require("../contracts/abi/minter.json");
-
+  const purchaseEdition = async (mintContractAddress, salePrice) => {
     const mintingContract = new ethers.Contract(
-      minterAddress,
+      mintContractAddress,
       minterABI.abi,
       signer
     );
 
-    const salePrice = ethers.utils.parseEther("0.08");
+    const price = ethers.utils.parseEther(salePrice);
 
     try {
-      const tx = await mintingContract.setSalePrice(salePrice);
-      console.log("Succesfully set sale price to:" + salePrice);
+      const tx = await mintingContract.purchase({
+        value: price,
+      });
       return {
         result: true,
         message:
-          "✅ Succesfully set sale price to" +
-          salePrice +
-          "see more at https://rinkeby.etherscan.io/tx/" +
-          tx.hash,
+          "Succesfully purchased NFT! Patience, blockchain can be slow. The NFT will be in your wallet soon!",
       };
     } catch (error) {
       return {
         result: false,
-        message: "😥 Whoops, something went wrong!",
+        message: "Transaction failed, try again!",
       };
     }
   };
 
-  const getTotalSupply = async (mintContractAddress) => {
-    const provider = new ethers.providers.JsonRpcProvider();
+  // Modify Set Sale Price to take in Contract Address
+  const setSalePrice = async (contractAddress, price) => {
+    const mintingContract = new ethers.Contract(
+      contractAddress,
+      minterABI.abi,
+      signer
+    );
 
+    const salePrice = ethers.utils.parseEther(price);
+
+    try {
+      const tx = await mintingContract.setSalePrice(salePrice);
+      return {
+        result: true,
+        message: "Succesfully changed sale price!",
+      };
+    } catch (error) {
+      return {
+        result: false,
+        message: "Transaction failed, try again!",
+      };
+    }
+  };
+
+  const getSalePrice = async (mintContractAddress) => {
+    const mintingContract = new ethers.Contract(
+      mintContractAddress,
+      minterABI.abi,
+      infura
+    );
+
+    try {
+      let price = await mintingContract.salePrice();
+      return ethers.utils.formatEther(price);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTotalSupply = async (mintContractAddress) => {
     const minterABI = require("../contracts/abi/minter.json");
 
     const mintingContract = new ethers.Contract(
@@ -214,39 +292,41 @@ function useWeb3() {
 
     try {
       let supply = await mintingContract.totalSupply();
-      console.log(supply);
       return supply.toNumber();
     } catch {
       console.log("Couldn't get supply!");
     }
   };
 
-  const purchaseEdition = async (mintContractAddress) => {
+  // Handle a null balance...
+  const getContractBalance = async (contractAddress) => {
+    try {
+      const balance = await infura.getBalance(contractAddress);
+      return ethers.utils.formatEther(balance);
+    } catch (error) {
+      console.log("Error retrieveing balance");
+    }
+  };
+
+  const withdrawEditionBalance = async (contractAddress) => {
     const minterABI = require("../contracts/abi/minter.json");
 
     const mintingContract = new ethers.Contract(
-      mintContractAddress,
+      contractAddress,
       minterABI.abi,
       signer
     );
 
-    const salePrice = ethers.utils.parseEther("0.08");
-
     try {
-      const tx = await mintingContract.purchase({
-        value: salePrice,
-      });
-      console.log("Succesfully set sale price to:" + salePrice);
+      const tx = await mintingContract.withdraw();
       return {
         result: true,
-        message:
-          "✅ Succesfully purchased NFT: See details at https://rinkeby.etherscan.io/tx/" +
-          tx.hash,
+        message: "Successfully withdrew ETH",
       };
     } catch (error) {
       return {
         result: false,
-        message: "😥 Whoops, something went wrong!",
+        message: "Something went wrong, try again!",
       };
     }
   };
@@ -260,6 +340,7 @@ function useWeb3() {
   // On load events
   useEffect(setupWeb3Modal, []);
   useEffect(checkCached, [modal]);
+  useEffect(fetchEditionsCreator, []);
 
   return {
     address,
@@ -270,6 +351,10 @@ function useWeb3() {
     setSalePrice,
     purchaseEdition,
     getTotalSupply,
+    getSalePrice,
+    getContractBalance,
+    withdrawEditionBalance,
+    fetchEditionsCreator,
   };
 }
 
