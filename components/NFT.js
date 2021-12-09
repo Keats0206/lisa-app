@@ -4,13 +4,10 @@ import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
 import ReactPlayer from "react-player";
 import { useToasts } from "react-toast-notifications";
+import { Parallax, ParallaxProvider } from "react-scroll-parallax";
 
 export default function NFT({ nft }) {
-  const {
-    address,
-    activeNetwork,
-    purchaseEdition,
-  } = web3.useContainer();
+  const { address, activeNetwork, purchaseEdition } = web3.useContainer();
 
   const [loading, setLoading] = useState(false);
   const [directLink, setDirectLink] = useState(false);
@@ -56,7 +53,7 @@ export default function NFT({ nft }) {
           <div>
             <h4>Price:</h4>
             {nft.salePrice > 0 ? (
-               <h2>{nft.salePrice} ETH</h2>
+              <h2>{nft.salePrice} ETH</h2>
             ) : (
               <h2>Unlisted</h2>
             )}
@@ -107,7 +104,6 @@ export default function NFT({ nft }) {
       </div>
       <div className={styles.media_container}>
         <div className={styles.media}>
-          {/* <Parallax y={[-40, 40]}> */}
           <ReactPlayer
             url={nft.uris[0]}
             controls={true}
@@ -115,8 +111,6 @@ export default function NFT({ nft }) {
             height="100%"
           />
         </div>
-
-        {/* </Parallax> */}
       </div>
     </div>
   );

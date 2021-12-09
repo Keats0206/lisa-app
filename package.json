@@ -19,6 +19,7 @@
     "react-parallax": "^3.3.0",
     "react-player": "^2.9.0",
     "react-scroll-parallax": "^2.4.0",
+    "react-scroll-progress-bar": "^1.1.13",
     "react-toast-notifications": "^2.5.1",
     "rellax": "^1.12.1",
     "sass": "^1.43.4",
