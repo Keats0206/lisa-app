@@ -134,8 +134,7 @@ export default function Create() {
                       </span>
                     </label>
                     <span>
-                      for example:
-                      "https://ipfs.io/ipfs/QmX13sSh8VqmAsgCwdMegj2ZhNQFPUbwifF944gFHhVTr8"
+                      for example: https://ipfs.io/ipfs/QmX13sSh8VqmAsgCwdMegj2ZhNQFPUbwifF944gFHhVTr8
                     </span>
                     <input
                       id="previewImageUrl"
@@ -156,7 +155,7 @@ export default function Create() {
                     </label>
                     <span>
                       for example:
-                      "https://ipfs.io/ipfs/QmX13sSh8VqmAsgCwdMegj2ZhNQFPUbwifF944gFHhVTr8"
+                      https://ipfs.io/ipfs/QmX13sSh8VqmAsgCwdMegj2ZhNQFPUbwifF944gFHhVTr8
                     </span>
                     <input
                       id="animationUrl"

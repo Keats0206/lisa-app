@@ -1,38 +1,37 @@
 import Layout from "../components/Layout"; // Layout
 import NFT from "../components/NFT";
 import Loading from "../components/Loading";
-import styles from "../styles/pages/Home.module.scss"
+import styles from "../styles/pages/Home.module.scss";
 import { web3 } from "../containers/index"; // Web3 container
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const [nfts, setNFTs] = useState(null);
-  
-  const {
-    address,
-    fetchEditionsCreator
-  } = web3.useContainer();
+
+  const { fetchEditionsCreator } = web3.useContainer();
 
   const handleFetchEdition = async () => {
-    const editions = await fetchEditionsCreator(process.env.NEXT_PUBLIC_ADMIN_WALLET);
+    const editions = await fetchEditionsCreator(
+      process.env.NEXT_PUBLIC_ADMIN_WALLET
+    );
     console.log("Got NFTs in the frontend");
     console.log(editions);
     setNFTs(editions);
-  }
+  };
 
   useEffect(() => {
     handleFetchEdition();
-  }, [])
+  }, []);
 
   return (
     <Layout>
       {nfts ? (
-              <div>
-              {nfts.map((nft, id) => {
-                return <NFT key={id} nft={nft} />;
-              })}
-            </div>
-      ) :(
+        <div>
+          {nfts.map((nft, id) => {
+            return <NFT key={id} nft={nft} />;
+          })}
+        </div>
+      ) : (
         <Loading />
       )}
       <div className={styles.background}>

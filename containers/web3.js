@@ -3,6 +3,7 @@ import { ethers, providers } from "ethers"; // Ethers
 import { useState, useEffect } from "react"; // State management
 import { createContainer } from "unstated-next"; // Unstated-next containerization
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
+import {editions} from "../data/editions"
 
 // Web3Modal provider options
 const providerOptions = {
@@ -104,10 +105,11 @@ function useWeb3() {
 
     const events = await factoryContract.queryFilter(eventFilter);
 
-          // for each contract address call the create nft function
-      // const editionAddress = events[1].args.editionContractAddress;
-      // var edition = await createNFTfromContractAddress(editionAddress);
-      // editionNFTs.push(edition);
+    // Returns a single NFT, useful for testing
+    
+    // const editionAddress = events[1].args.editionContractAddress;
+    // var edition = await createNFTfromContractAddress(editionAddress);
+    // editionNFTs.push(edition);
 
     for (let i = 0; i < events.length; i++) {
       // for each contract address call the create nft function
@@ -115,7 +117,7 @@ function useWeb3() {
       var edition = await createNFTfromContractAddress(editionAddress);
       editionNFTs.push(edition);
     }
-    
+
     return editionNFTs;
   };
 
@@ -129,7 +131,9 @@ function useWeb3() {
     try {
       const name = await editionContract.name();
       const symbol = await editionContract.symbol();
-      // const description = await editionContract.description();
+      // const description = await editionContract.description(); //No getter for description at the moment
+      // Supplementing description with manual data for now
+      const description = name == "Gemini" ? editions[0].description : editions[1].description
       const owner = await editionContract.owner();
       const salePrice = await editionContract.salePrice();
       const editionSize = await editionContract.editionSize();
@@ -140,17 +144,16 @@ function useWeb3() {
         contractAddress: contractAddress,
         name: name,
         symbol: symbol,
-        // description: description,
+        description: description,
         owner: owner,
         salePrice: ethers.utils.formatEther(salePrice),
         editionSize: editionSize.toString(),
         uris: uris, // array of content URIs
-        totalSupply: totalSupply.toString()
+        totalSupply: totalSupply.toString(),
       };
-
       return nftEdition;
     } catch (error) {
-      console.log("error creating NFT");
+      console.log(error);
     }
   };
 
