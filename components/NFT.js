@@ -9,12 +9,9 @@ export default function NFT({ nft }) {
   const {
     address,
     activeNetwork,
-    getTotalSupply,
     purchaseEdition,
-    getSalePrice,
   } = web3.useContainer();
-  const [supply, setSupply] = useState(0);
-  const [price, setPrice] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [directLink, setDirectLink] = useState(false);
   const { addToast } = useToasts();
@@ -23,7 +20,7 @@ export default function NFT({ nft }) {
     setLoading(true);
     const { result, message } = await purchaseEdition(
       nft.contractAddress,
-      price
+      nft.salePrice
     );
     if (result) {
       addToast(message, {
@@ -44,20 +41,7 @@ export default function NFT({ nft }) {
     setDirectLink(url);
   };
 
-  const handleGetPrice = async () => {
-    let res = await getSalePrice(nft.contractAddress);
-    setPrice(res);
-  };
-
-  const handleGetSupply = async () => {
-    let res = await getTotalSupply(nft.contractAddress);
-    setSupply(res);
-  };
-
-  // Move this stuff to server side
   useEffect(() => {
-    handleGetSupply();
-    handleGetPrice();
     setDirectLinkOpenSea();
   }, []);
 
@@ -71,8 +55,8 @@ export default function NFT({ nft }) {
         <div className={styles.sub_details}>
           <div>
             <h4>Price:</h4>
-            {price > 0 ? (
-               <h2>{price} ETH</h2>
+            {nft.salePrice > 0 ? (
+               <h2>{nft.salePrice} ETH</h2>
             ) : (
               <h2>Unlisted</h2>
             )}
@@ -80,12 +64,12 @@ export default function NFT({ nft }) {
           <div>
             <h4>Editions Remaining:</h4>
             <h2>
-              {nft.editionSize - supply} out of {nft.editionSize}
+              {nft.editionSize - nft.totalSupply} out of {nft.editionSize}
             </h2>
           </div>
         </div>
         {/* Check if NFT has been listed for sale */}
-        {price > 0 ? (
+        {nft.salePrice > 0 ? (
           <>
             {address ? (
               <>
@@ -125,7 +109,7 @@ export default function NFT({ nft }) {
         <div className={styles.media}>
           {/* <Parallax y={[-40, 40]}> */}
           <ReactPlayer
-            url={nft.animationUrl}
+            url={nft.uris[0]}
             controls={true}
             width="100%"
             height="100%"

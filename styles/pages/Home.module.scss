@@ -1,0 +1,16 @@
+.background {
+text-align: center;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -100;
+
+  h1 {
+    color: white;
+    font-size: 10em;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: purple;
+    opacity: 0.2;
+  }
+}

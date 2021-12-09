@@ -48,7 +48,7 @@ export default function Create() {
         editionSize,
         royaltyBPS
       );
-      // router.push("/success"); // Redirect to success page
+      router.push("/admin"); // Redirect to success page
     } catch (e) {
       console.log("Error when executing: ", e);
     }

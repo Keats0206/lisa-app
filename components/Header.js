@@ -20,7 +20,7 @@ export default function Header() {
     <div className={styles.header}>
       {/* Logo */}
       <div className={styles.header__logo}>
-        <a href="https://11lit3s.com/">
+        <a href="/">
           <Image src="/logo.png" alt="11 LIT3S Logo" height={75} width={75} />
         </a>
       </div>

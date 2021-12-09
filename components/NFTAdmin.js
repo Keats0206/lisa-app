@@ -14,8 +14,6 @@ export default function NFTAdmin({ nft }) {
     withdrawEditionBalance
   } = web3.useContainer();
 
-  const [supply, setSupply] = useState(0); // NFT remainging edition supply
-  const [price, setPrice] = useState(0); // NFT edition price
   const [loading, setLoading] = useState(false); // Loading state
   // const [directLink, setDirectLink] = useState(false);
   const [newPrice, setNewPrice] = useState(0); // Price for changed / set NFT edition Price
@@ -55,20 +53,8 @@ export default function NFTAdmin({ nft }) {
     setLoading(false);
   };
 
-  const handleGetPrice = async () => {
-    let res = await getSalePrice(nft.contractAddress);
-    setPrice(res);
-  };
-
-  const getSupply = async () => {
-    let res = await getTotalSupply(nft.contractAddress);
-    setSupply(res);
-  };
-
   // Move this stuff to server side
   useEffect(() => {
-    getSupply();
-    handleGetPrice();
     handleGetContractBalance();
   }, []);
 
@@ -81,12 +67,12 @@ export default function NFTAdmin({ nft }) {
         <div className={styles.sub_details}>
           <div>
             <h4>Price:</h4>
-            <h2>{price} ETH</h2>
+            <h2>{nft.salePrice} ETH</h2>
           </div>
           <div>
             <h4>Editions Remaining:</h4>
             <h2>
-              {nft.editionSize - supply} out of {nft.editionSize}
+              {nft.editionSize - nft.totalSupply} out of {nft.editionSize}
             </h2>
           </div>
         </div>
@@ -128,6 +114,12 @@ export default function NFTAdmin({ nft }) {
                 {loading ? <Spinner /> : "Withdraw ETH"}
               </button>
             </div>
+            <button 
+                onClick={() => handleGetMetadata()}
+              >
+                {loading ? <Spinner /> : "Get Metadata"}
+              </button>
+              
           </div>
 
         </div>
@@ -135,7 +127,7 @@ export default function NFTAdmin({ nft }) {
       <div className={styles.media}>
         {/* <Parallax y={[-40, 40]}> */}
         <ReactPlayer
-          url={nft.animationUrl}
+          url={nft.uris[0]}
           controls={true}
           width="100%"
           height="100%"

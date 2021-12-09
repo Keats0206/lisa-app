@@ -3,7 +3,6 @@ import { ethers, providers } from "ethers"; // Ethers
 import { useState, useEffect } from "react"; // State management
 import { createContainer } from "unstated-next"; // Unstated-next containerization
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
-import { createEditionSupabase } from "../data/supabase";
 
 // Web3Modal provider options
 const providerOptions = {
@@ -86,30 +85,74 @@ function useWeb3() {
   useEffect(checkChain, []);
 
   // // Works but is missing the name, symbol and description
-  // const getEditionNFTs = async () => {
-  //   const nfts = [];
+  const fetchEditionsCreator = async (creatorAddress) => {
+    const editionNFTs = [];
+    var contract = require("../contracts/abi/factory.json");
+    // Rinkeby Edition Factory Contract Address
+    var contractAddress = process.env.NEXT_PUBLIC_RINKEBY_FACTORY_CONTRACT;
+    // Create ethers connection to factory contract
+    var factoryContract = new ethers.Contract(
+      contractAddress,
+      contract.abi,
+      infura // Switch to a fixed address for the 11 LIT3S team
+    );
 
-  //   var contract = require("../contracts/abi/factory.json");
-  //   // Rinkeby Edition Factory Contract Address
-  //   var contractAddress = process.env.NEXT_PUBLIC_RINKEBY_FACTORY_CONTRACT;
-  //   // Create ethers connection to factory contract
-  //   var factoryContract = new ethers.Contract(
-  //     contractAddress,
-  //     contract.abi,
-  //     signer // Switch to a fixed address for the 11 LIT3S team
-  //   );
+    const eventFilter = factoryContract.filters.CreatedEdition(
+      null,
+      creatorAddress
+    );
 
-  //   const eventFilter = factoryContract.filters.CreatedEdition(null, address);
-  //   const events = await factoryContract.queryFilter(eventFilter);
+    const events = await factoryContract.queryFilter(eventFilter);
 
-  //   const contractAddresses = [];
+          // for each contract address call the create nft function
+      // const editionAddress = events[1].args.editionContractAddress;
+      // var edition = await createNFTfromContractAddress(editionAddress);
+      // editionNFTs.push(edition);
 
-  //   for (let i = 0; i < events.length; i++) {
-  //     contractAddresses.push(events[i].args.editionContractAddress);
-  //   }
+    for (let i = 0; i < events.length; i++) {
+      // for each contract address call the create nft function
+      const editionAddress = events[i].args.editionContractAddress;
+      var edition = await createNFTfromContractAddress(editionAddress);
+      editionNFTs.push(edition);
+    }
+    
+    return editionNFTs;
+  };
 
-  //   return contractAddresses;
-  // };
+  const createNFTfromContractAddress = async (contractAddress) => {
+    var editionContract = new ethers.Contract(
+      contractAddress,
+      minterABI.abi,
+      infura
+    );
+
+    try {
+      const name = await editionContract.name();
+      const symbol = await editionContract.symbol();
+      // const description = await editionContract.description();
+      const owner = await editionContract.owner();
+      const salePrice = await editionContract.salePrice();
+      const editionSize = await editionContract.editionSize();
+      const uris = await editionContract.getURIs(); // array of content URIs
+      const totalSupply = await editionContract.totalSupply();
+
+      let nftEdition = {
+        contractAddress: contractAddress,
+        name: name,
+        symbol: symbol,
+        // description: description,
+        owner: owner,
+        salePrice: ethers.utils.formatEther(salePrice),
+        editionSize: editionSize.toString(),
+        uris: uris, // array of content URIs
+        totalSupply: totalSupply.toString()
+      };
+
+      return nftEdition;
+    } catch (error) {
+      console.log("error creating NFT");
+    }
+  };
 
   /// @param _name Name of the edition contract
   /// @param _symbol Symbol of the edition contract
@@ -157,34 +200,10 @@ function useWeb3() {
         editionSize,
         adjustedRoyalty
       );
-
-      // Get the latest edition event
-      const eventFilter = factoryContract.filters.CreatedEdition(null, address);
-      const events = await factoryContract.queryFilter(eventFilter);
-
-      // Contract address of most recent event deployed by the user
-      let latestEditionAddress =
-        events[events.length - 1].args.editionContractAddress;
-
-      // Send that contract and metadata into the supabase DB
-      await createEditionSupabase(
-        latestEditionAddress,
-        name,
-        symbol,
-        description,
-        previewImageUrl,
-        animationUrl,
-        editionSize,
-        royaltyBPS,
-        adjustedRoyalty
-      );
-
-      // Fetch from the supabase DB for the UI
-
       return {
         result: true,
         message:
-          "Succesfully created edition, set a price for the NFT to be purchased!"
+          "Succesfully created edition, set a price for the NFT to be purchased!",
       };
     } catch (error) {
       return {
@@ -210,7 +229,7 @@ function useWeb3() {
       return {
         result: true,
         message:
-          "Succesfully purchased NFT! Patience, blockchain can be slow. The NFT will be in your wallet soon!"
+          "Succesfully purchased NFT! Patience, blockchain can be slow. The NFT will be in your wallet soon!",
       };
     } catch (error) {
       return {
@@ -234,8 +253,7 @@ function useWeb3() {
       const tx = await mintingContract.setSalePrice(salePrice);
       return {
         result: true,
-        message:
-          "Succesfully changed sale price!"
+        message: "Succesfully changed sale price!",
       };
     } catch (error) {
       return {
@@ -277,12 +295,13 @@ function useWeb3() {
     }
   };
 
+  // Handle a null balance...
   const getContractBalance = async (contractAddress) => {
     try {
       const balance = await infura.getBalance(contractAddress);
       return ethers.utils.formatEther(balance);
     } catch (error) {
-      console.log(error);
+      console.log("Error retrieveing balance");
     }
   };
 
@@ -299,8 +318,7 @@ function useWeb3() {
       const tx = await mintingContract.withdraw();
       return {
         result: true,
-        message:
-          "Successfully withdrew ETH"
+        message: "Successfully withdrew ETH",
       };
     } catch (error) {
       return {
@@ -319,6 +337,7 @@ function useWeb3() {
   // On load events
   useEffect(setupWeb3Modal, []);
   useEffect(checkCached, [modal]);
+  useEffect(fetchEditionsCreator, []);
 
   return {
     address,
@@ -332,6 +351,7 @@ function useWeb3() {
     getSalePrice,
     getContractBalance,
     withdrawEditionBalance,
+    fetchEditionsCreator,
   };
 }
 

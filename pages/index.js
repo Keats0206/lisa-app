@@ -1,29 +1,43 @@
 import Layout from "../components/Layout"; // Layout
-import { web3 } from "../containers/index"; // Web3 container
 import NFT from "../components/NFT";
-import Upcoming from "../components/Upcoming";
-import styles from "../styles/pages/Home.module.scss"; // Component styles
-import { fetchEditionsSupabase } from "../data/supabase";
+import Loading from "../components/Loading";
+import styles from "../styles/pages/Home.module.scss"
+import { web3 } from "../containers/index"; // Web3 container
+import {useState, useEffect} from "react";
 
-export default function Home({ editions }) {
-  const { createEdition } = web3.useContainer();
+export default function Home() {
+  const [nfts, setNFTs] = useState(null);
+  
+  const {
+    address,
+    fetchEditionsCreator
+  } = web3.useContainer();
+
+  const handleFetchEdition = async () => {
+    const editions = await fetchEditionsCreator(process.env.NEXT_PUBLIC_ADMIN_WALLET);
+    console.log("Got NFTs in the frontend");
+    console.log(editions);
+    setNFTs(editions);
+  }
+
+  useEffect(() => {
+    handleFetchEdition();
+  }, [])
 
   return (
     <Layout>
-      <div>
-        {editions.map((edition, id) => {
-          return <NFT key={id} nft={edition} />;
-        })}
+      {nfts ? (
+              <div>
+              {nfts.map((nft, id) => {
+                return <NFT key={id} nft={nft} />;
+              })}
+            </div>
+      ) :(
+        <Loading />
+      )}
+      <div className={styles.background}>
+        <h1>11 LIT3S HOTEL</h1>
       </div>
-      <Upcoming />
     </Layout>
   );
 }
-
-export const getServerSideProps = async () => {
-  const editions = await fetchEditionsSupabase();
-
-  return {
-    props: { editions: editions },
-  };
-};
