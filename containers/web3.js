@@ -86,11 +86,13 @@ function useWeb3() {
   useEffect(checkChain, []);
 
   // // Works but is missing the name, symbol and description
-  const fetchEditionsCreator = async (creatorAddress) => {
+  const fetchEditions = async () => {
     const editionNFTs = [];
     
     var contract = require("../contracts/abi/factory.json");
     // Rinkeby Edition Factory Contract Address
+
+    const creatorAddress = process.env.NEXT_PUBLIC_ADMIN_WALLET;
 
     const address = "0x85FaDB8Debc0CED38d0647329fC09143d01Af660"
     // var contractAddress = process.env.NEXT_PUBLIC_RINKEBY_FACTORY_CONTRACT;
@@ -343,7 +345,6 @@ function useWeb3() {
   // On load events
   useEffect(setupWeb3Modal, []);
   useEffect(checkCached, [modal]);
-  useEffect(fetchEditionsCreator, []);
 
   return {
     address,
@@ -357,7 +358,8 @@ function useWeb3() {
     getSalePrice,
     getContractBalance,
     withdrawEditionBalance,
-    fetchEditionsCreator,
+    fetchEditions,
+    createNFTfromContractAddress
   };
 }
 

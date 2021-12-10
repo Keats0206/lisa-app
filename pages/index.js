@@ -4,18 +4,16 @@ import Loading from "../components/Loading";
 import styles from "../styles/pages/Home.module.scss";
 import { web3 } from "../containers/index"; // Web3 container
 import { useState, useEffect } from "react";
+import { fetchEditions } from "../data/web3data";
 
 export default function Home() {
   const [nfts, setNFTs] = useState(null);
-
-  const { fetchEditionsCreator } = web3.useContainer();
+  const { fetchEditions } = web3.useContainer();
 
   const handleFetchEdition = async () => {
-    const editions = await fetchEditionsCreator(
+    const editions = await fetchEditions(
       process.env.NEXT_PUBLIC_ADMIN_WALLET
     );
-    console.log("Got NFTs in the frontend");
-    console.log(editions);
     setNFTs(editions);
   };
 
@@ -40,3 +38,9 @@ export default function Home() {
     </Layout>
   );
 }
+
+// export async function getServerSideProps() {
+//   return {
+//     props: {nfts: await fetchEditionsCreator()},
+//   }
+// }
