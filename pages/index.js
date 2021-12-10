@@ -1,5 +1,6 @@
 import Layout from "../components/Layout"; // Layout
 import NFT from "../components/NFT";
+import Footer from "../components/Footer";
 import Loading from "../components/Loading";
 import styles from "../styles/pages/Home.module.scss";
 import { web3 } from "../containers/index"; // Web3 container
@@ -19,7 +20,7 @@ export default function Home() {
     <Layout>
       {editions ? (
         <div>
-          {editions.map((nft, id) => {
+          {editions.filter(nft => nft.salePrice > 0).map((nft, id) => {
             return <NFT key={id} nft={nft} />;
           })}
         </div>
@@ -29,6 +30,7 @@ export default function Home() {
       <div className={styles.background}>
         <h1>11 LIT3S HOTEL</h1>
       </div>
+      <Footer />
     </Layout>
   );
 }

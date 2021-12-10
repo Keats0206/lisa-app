@@ -7,11 +7,10 @@ import { useToasts } from "react-toast-notifications";
 
 export default function NFTAdmin({ nft }) {
   const {
-    getTotalSupply,
     getContractBalance,
-    getSalePrice,
     setSalePrice,
-    withdrawEditionBalance
+    withdrawEditionBalance,
+    getContractRoyaltyInfo,
   } = web3.useContainer();
 
   const [loading, setLoading] = useState(false); // Loading state
@@ -19,6 +18,8 @@ export default function NFTAdmin({ nft }) {
   const [newPrice, setNewPrice] = useState(0); // Price for changed / set NFT edition Price
   const [valueInContract, setValueInContract] = useState(""); // Eth amount available to Admin
   const { addToast } = useToasts();
+  const [royaltyReciever, setRoyaltyReciever] = useState(""); // Price for changed / set NFT edition Price
+  const [royaltyAmount, setRoyaltyAmount] = useState(""); // Price for changed / set NFT edition Price
 
   // Creating toast alerts on success
   const createToastAlert = async (result, message) => {
@@ -33,22 +34,36 @@ export default function NFTAdmin({ nft }) {
         autoDismiss: true,
       });
     }
-  }
+  };
 
   const handleSetChangePrice = async () => {
-    const { result, message } = await setSalePrice(nft.contractAddress, newPrice);
+    const { result, message } = await setSalePrice(
+      nft.contractAddress,
+      newPrice
+    );
     createToastAlert(result, message);
     setNewPrice(0);
   };
 
-  const handleGetContractBalance= async () => {
+  const handleGetContractBalance = async () => {
     let eth = await getContractBalance(nft.contractAddress);
     setValueInContract(eth);
   };
 
-  const handleWithdrawETH= async () => {
+  const getRoyaltyInfo = async () => {
+    let { receiver, amount } = await getContractRoyaltyInfo(
+      nft.contractAddress,
+      nft.salePrice
+    );
+    setRoyaltyReciever(receiver);
+    setRoyaltyAmount(amount);
+  };
+
+  const handleWithdrawETH = async () => {
     setLoading(true);
-    const { result, message } = await withdrawEditionBalance(nft.contractAddress);
+    const { result, message } = await withdrawEditionBalance(
+      nft.contractAddress
+    );
     createToastAlert(result, message);
     setLoading(false);
   };
@@ -56,24 +71,35 @@ export default function NFTAdmin({ nft }) {
   // Move this stuff to server side
   useEffect(() => {
     handleGetContractBalance();
+    getRoyaltyInfo();
   }, []);
 
   return (
     <div className={styles.container}>
       <div className={styles.detail}>
-        <h1>{nft.name}</h1>
-        <h3>{nft.symbol}</h3>
+        <h4>{nft.name}</h4>
+        <h5>{nft.symbol}</h5>
         <p>{nft.description}</p>
         <div className={styles.sub_details}>
           <div>
-            <h4>Price:</h4>
-            <h2>{nft.salePrice} ETH</h2>
+            <h5>Price:</h5>
+            <h4>{nft.salePrice} ETH</h4>
           </div>
           <div>
-            <h4>Editions Remaining:</h4>
-            <h2>
+            <h5>Editions Remaining:</h5>
+            <h4>
               {nft.editionSize - nft.totalSupply} out of {nft.editionSize}
-            </h2>
+            </h4>
+          </div>
+          <div>
+            <h5>Royalty Info:</h5>
+            <h4>
+              Pay To:{" "}
+              {royaltyReciever.substr(0, 5) +
+                "..." +
+                royaltyReciever.slice(royaltyReciever.length - 5)}
+            </h4>
+            <h4>Royalty: {royaltyAmount}%</h4>
           </div>
         </div>
         <div>
@@ -92,36 +118,30 @@ export default function NFTAdmin({ nft }) {
                 value={newPrice}
                 onChange={(e) => setNewPrice(e.target.value)}
               />
-              <button 
-              onClick={() => handleSetChangePrice()}
-              disabled={
-                newPrice < 0 || //New price is set to a negative number or 0
-                !newPrice // No New Price provided
-              }
+              <button
+                onClick={() => handleSetChangePrice()}
+                disabled={
+                  newPrice < 0 || //New price is set to a negative number or 0
+                  !newPrice // No New Price provided
+                }
               >
                 {loading ? <Spinner /> : "Update Sale Price"}
               </button>
             </div>
             <div>
               <h4>Withdraw from contract:</h4>
-              <h3>
-                Amount Available: {valueInContract} ETH
-              </h3>
-              <span className={styles.create__upload_required}>Only the contract owner can withdraw these funds</span>
-              <button 
-                onClick={() => handleWithdrawETH()}
-              >
+              <h3>Amount Available: {valueInContract} ETH</h3>
+              <span className={styles.create__upload_required}>
+                Only the contract owner can withdraw these funds
+              </span>
+              <button onClick={() => handleWithdrawETH()}>
                 {loading ? <Spinner /> : "Withdraw ETH"}
               </button>
             </div>
-            <button 
-                onClick={() => handleGetMetadata()}
-              >
-                {loading ? <Spinner /> : "Get Metadata"}
-              </button>
-              
+            <button onClick={() => handleGetMetadata()}>
+              {loading ? <Spinner /> : "Get Metadata"}
+            </button>
           </div>
-
         </div>
       </div>
       <div className={styles.media}>

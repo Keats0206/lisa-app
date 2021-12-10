@@ -9,7 +9,6 @@ export default function Layout({ children }) {
       <Header />
       {/* Content Container */}
       <div className={styles.container}>{children}</div>
-      <Footer />
     </div>
   );
 }

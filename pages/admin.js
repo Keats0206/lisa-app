@@ -5,7 +5,7 @@ import { web3 } from "../containers/index"; // Web3 container
 import styles from "../styles/pages/Admin.module.scss"; // Component styles
 import NFTAdmin from "../components/NFTAdmin";
 
-export default function Admin({ editions }) {
+export default function Admin() {
   const [editions, setEditions] = useState([]);
   
   const {

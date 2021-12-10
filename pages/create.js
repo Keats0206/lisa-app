@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"; // State management
 import NFT from "../components/NFT"; // Post content
-import Dropzone from "react-dropzone"; // React dropzone upload
 import { useRouter } from "next/router"; // Router
 import Layout from "../components/Layout"; // Layout wrapper
 import { web3 } from "../containers/index"; // Web3 container

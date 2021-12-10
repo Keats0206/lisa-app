@@ -23,7 +23,7 @@ function useWeb3() {
   const [activeNetwork, setActiveNetwork] = useState(""); // Set Network
   const [nfts, setNfts] = useState(null); // Set Edition NFTs
 
-  
+
   const minterABI = require("../contracts/abi/minter.json");
 
   /**
@@ -165,6 +165,27 @@ function useWeb3() {
       console.log(error);
     }
   };
+
+  const  getContractRoyaltyInfo = async (contractAddress, salePrice) => {
+    var editionContract = new ethers.Contract(
+      contractAddress,
+      minterABI.abi,
+      infura
+    );
+
+    try {
+      // Passing in 0 token Id, 100 for sale price to return % result used in frontend.
+      const royalty = await editionContract.royaltyInfo(0, 100);
+      const royaltyInfo = {
+        receiver: royalty.receiver,
+        amount: royalty.royaltyAmount.toNumber()
+      }
+      return royaltyInfo;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   /// @param _name Name of the edition contract
   /// @param _symbol Symbol of the edition contract
@@ -363,7 +384,8 @@ function useWeb3() {
     getContractBalance,
     withdrawEditionBalance,
     fetchEditions,
-    createNFTfromContractAddress
+    createNFTfromContractAddress,
+    getContractRoyaltyInfo
   };
 }
 

@@ -23,25 +23,3 @@
     font-family: 'Syne', sans-serif;
   }
 }
-
-.progressBarContainer {
-  position: fixed;
-  z-index: 10;
-  background: rgba(255,255,255,0.05);
-  width: 100%;
-  top: 0;
-  left: 0;
-}
-
-
-.progressBar {
-  background: linear-gradient(to left, red, violet);
-  transform-origin: top left;
-  transform: scale(0,0);
-  opacity: 0;
-}
-
-.progressBarContainer,
-.progressBar {
-  height: 10px;
-}
