@@ -1,27 +1,30 @@
 .container {
   display: flex;
-  width: 100vw;
+  width: 90vw;
   height: 80vh;
   padding-left: 5vw;
   padding-right: 5vw;
-  padding-top: 50px;
   margin-left: auto;
   margin-right: auto;
   backdrop-filter: blur(3px);
+  justify-content: center;
 }
 
 .media_container {
   height: 100%;
-  width: 70vw;
+  max-width: 700px;
   justify-content: flex-start;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
+  padding-right: 5vw;
 }
 
 .detail {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
   width: 30vw;
-  padding-right: 20px;
+  justify-content: center;
 
   h2 {
     font-size: 22px;
@@ -73,7 +76,6 @@
 
   .nft__button_unlisted {
     color: gray;
-    border: solid 3px green;
   }
 }
 
@@ -82,11 +84,22 @@
   .container {
     display: flex;
     flex-direction: column;
-    width: 100vw;
+    width: 90vw;
+    max-width: 90vw;
     height: 100vh;
     padding-left: 5vw;
     padding-right: 5vw;
   } 
+
+  .media_container {
+    height: 30%;
+    max-width: 700px;
+    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 0vw;
+  }
 
   .detail {
     width: 90%;
@@ -100,10 +113,5 @@
       padding-right: 50px;
     }
     padding-bottom: 20px;
-  }
-  
-  .media_container {
-    width: 100%;
-    align-items: center;
   }
 }

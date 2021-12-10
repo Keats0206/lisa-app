@@ -7,7 +7,7 @@ export default function Footer() {
       <div className={styles.social_links}>
         <a href="https://twitter.com/11LIT3S" target="_blank"  rel="noreferrer">
           <Image
-            src="/discord.png"
+            src="/twitter.png"
             alt="11 LIT3S Logo"
             height={30}
             width={30}
@@ -15,7 +15,7 @@ export default function Footer() {
         </a>
         <a href="https://11LIT3S.com/discord" target="_blank"  rel="noreferrer">
           <Image
-            src="/twitter.png"
+            src="/discord.png"
             alt="11 LIT3S Logo"
             height={30}
             width={30}

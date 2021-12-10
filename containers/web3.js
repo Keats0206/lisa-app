@@ -88,14 +88,17 @@ function useWeb3() {
   // // Works but is missing the name, symbol and description
   const fetchEditionsCreator = async (creatorAddress) => {
     const editionNFTs = [];
+    
     var contract = require("../contracts/abi/factory.json");
     // Rinkeby Edition Factory Contract Address
-    var contractAddress = process.env.NEXT_PUBLIC_RINKEBY_FACTORY_CONTRACT;
+
+    const address = "0x85FaDB8Debc0CED38d0647329fC09143d01Af660"
+    // var contractAddress = process.env.NEXT_PUBLIC_RINKEBY_FACTORY_CONTRACT;
     // Create ethers connection to factory contract
     var factoryContract = new ethers.Contract(
-      contractAddress,
+      address,
       contract.abi,
-      infura // Switch to a fixed address for the 11 LIT3S team
+      infura
     );
 
     const eventFilter = factoryContract.filters.CreatedEdition(

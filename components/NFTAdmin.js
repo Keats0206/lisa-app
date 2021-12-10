@@ -125,14 +125,12 @@ export default function NFTAdmin({ nft }) {
         </div>
       </div>
       <div className={styles.media}>
-        {/* <Parallax y={[-40, 40]}> */}
         <ReactPlayer
           url={nft.uris[0]}
           controls={true}
           width="100%"
           height="100%"
         />
-        {/* </Parallax> */}
       </div>
     </div>
   );

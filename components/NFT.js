@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import Spinner from "../components/Spinner";
 import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
-import ReactPlayer from "react-player";
+import ReactPlayer from 'react-player/lazy'
 import { useToasts } from "react-toast-notifications";
-import { Parallax, ParallaxProvider } from "react-scroll-parallax";
 
 export default function NFT({ nft }) {
   const { address, activeNetwork, purchaseEdition } = web3.useContainer();
@@ -44,6 +43,16 @@ export default function NFT({ nft }) {
 
   return (
     <div className={styles.container}>
+      <div className={styles.media_container}>
+        <div className={styles.media}>
+          <ReactPlayer
+            url={nft.uris[0]}
+            controls={true}
+            width="100%"
+            height="100%"
+          />
+        </div>
+      </div>
       {/* NFT Detail Container */}
       <div className={styles.detail}>
         <h1>{nft.name}</h1>
@@ -97,20 +106,10 @@ export default function NFT({ nft }) {
             </button>
           </>
         )}
-        <a>
+        {/* <a> */}
           {/* <a href={directLink}> */}
           {/* <h4>View Collection on Opensea</h4> */}
-        </a>
-      </div>
-      <div className={styles.media_container}>
-        <div className={styles.media}>
-          <ReactPlayer
-            url={nft.uris[0]}
-            controls={true}
-            width="100%"
-            height="100%"
-          />
-        </div>
+        {/* </a> */}
       </div>
     </div>
   );
