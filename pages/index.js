@@ -7,25 +7,19 @@ import { useState, useEffect } from "react";
 import { fetchEditions } from "../data/web3data";
 
 export default function Home() {
-  const [nfts, setNFTs] = useState(null);
-  const { fetchEditions } = web3.useContainer();
-
-  const handleFetchEdition = async () => {
-    const editions = await fetchEditions(
-      process.env.NEXT_PUBLIC_ADMIN_WALLET
-    );
-    setNFTs(editions);
-  };
+  const [editions, setEditions] = useState(null);
+  
+  const { nfts } = web3.useContainer();
 
   useEffect(() => {
-    handleFetchEdition();
-  }, []);
+    setEditions(nfts);
+  }, [nfts]);
 
   return (
     <Layout>
-      {nfts ? (
+      {editions ? (
         <div>
-          {nfts.map((nft, id) => {
+          {editions.map((nft, id) => {
             return <NFT key={id} nft={nft} />;
           })}
         </div>
@@ -38,9 +32,3 @@ export default function Home() {
     </Layout>
   );
 }
-
-// export async function getServerSideProps() {
-//   return {
-//     props: {nfts: await fetchEditionsCreator()},
-//   }
-// }

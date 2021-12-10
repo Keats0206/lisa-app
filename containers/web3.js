@@ -20,10 +20,10 @@ function useWeb3() {
   const [modal, setModal] = useState(null); // Web3Modal
   const [address, setAddress] = useState(null); // ETH address
   const [signer, setSigner] = useState(null); // ETH address
-  const [editionId, setEditionID] = useState(null); // ETH address
-  const [web3Provider, setWeb3Provider] = useState(null); // ETH address
   const [activeNetwork, setActiveNetwork] = useState(""); // Set Network
+  const [nfts, setNfts] = useState(null); // Set Edition NFTs
 
+  
   const minterABI = require("../contracts/abi/minter.json");
 
   /**
@@ -52,7 +52,6 @@ function useWeb3() {
     await web3Provider.enable();
     // Generate ethers provider
     const provider = new providers.Web3Provider(web3Provider);
-    setWeb3Provider(provider);
     const signer = provider.getSigner();
     setSigner(signer);
     const address = await signer.getAddress();
@@ -122,9 +121,14 @@ function useWeb3() {
       var edition = await createNFTfromContractAddress(editionAddress);
       editionNFTs.push(edition);
     }
-
-    return editionNFTs;
+    setNfts(editionNFTs);
+    console.log(editionNFTs);
+    // return editionNFTs;
+    return;
   };
+
+  useEffect(fetchEditions, []);
+
 
   const createNFTfromContractAddress = async (contractAddress) => {
     var editionContract = new ethers.Contract(
@@ -349,9 +353,9 @@ function useWeb3() {
   return {
     address,
     authenticate,
+    nfts,
     activeNetwork,
     createEdition,
-    editionId,
     setSalePrice,
     purchaseEdition,
     getTotalSupply,

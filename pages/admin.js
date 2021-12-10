@@ -6,25 +6,20 @@ import styles from "../styles/pages/Admin.module.scss"; // Component styles
 import NFTAdmin from "../components/NFTAdmin";
 
 export default function Admin({ editions }) {
-  const [nfts, setNFTs] = useState([]);
+  const [editions, setEditions] = useState([]);
   
   const {
     address,
-    fetchEditionsCreator
+    nfts
   } = web3.useContainer();
 
-  const handleFetchEdition = async () => {
-    const editions = await fetchEditionsCreator(process.env.NEXT_PUBLIC_ADMIN_WALLET);
-    setNFTs(editions);
-  }
-
   useEffect(() => {
-    handleFetchEdition();
-  }, [])
+    setEditions(nfts);
+  }, [nfts]);
 
   return (
     <Layout>
-      {nfts ? (
+      {editions ? (
               <>
               {!address || address != process.env.NEXT_PUBLIC_ADMIN_WALLET ? (
                 // If not authenticated, display unauthenticated state
@@ -37,8 +32,8 @@ export default function Admin({ editions }) {
                   {/* Edition Name */}
                   <h2>Admin Page</h2>
                   <div className={styles.grid}>
-                    {nfts.map((nft, id) => {
-                      return <NFTAdmin nft={nft} key={id} />;
+                    {editions.map((edition, id) => {
+                      return <NFTAdmin nft={edition} key={id} />;
                     })}
                   </div>
                 </div>
