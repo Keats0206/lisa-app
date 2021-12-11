@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import Spinner from "../components/Spinner";
 import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
-import ReactPlayer from 'react-player/lazy'
+import ReactPlayer from "react-player";
 import { useToasts } from "react-toast-notifications";
 
 export default function NFT({ nft }) {
   const { address, activeNetwork, purchaseEdition } = web3.useContainer();
 
   const [loading, setLoading] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
   const [directLink, setDirectLink] = useState(false);
   const { addToast } = useToasts();
 
@@ -37,6 +38,10 @@ export default function NFT({ nft }) {
     setDirectLink(url);
   };
 
+  const handleVideoPlayerError = () => {
+    console.log("error with video player");
+  };
+
   useEffect(() => {
     setDirectLinkOpenSea();
   }, []);
@@ -50,6 +55,7 @@ export default function NFT({ nft }) {
             controls={true}
             width="100%"
             height="100%"
+            onError={handleVideoPlayerError}
           />
         </div>
       </div>
@@ -107,8 +113,8 @@ export default function NFT({ nft }) {
           </>
         )}
         {/* <a> */}
-          {/* <a href={directLink}> */}
-          {/* <h4>View Collection on Opensea</h4> */}
+        {/* <a href={directLink}> */}
+        {/* <h4>View Collection on Opensea</h4> */}
         {/* </a> */}
       </div>
     </div>
