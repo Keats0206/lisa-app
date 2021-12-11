@@ -1,4 +1,5 @@
 import Layout from "../components/Layout"; // Layout
+import Image from "next/image";
 import NFT from "../components/NFT";
 import Footer from "../components/Footer";
 import Loading from "../components/Loading";
@@ -28,7 +29,7 @@ export default function Home() {
         <Loading />
       )}
       <div className={styles.background}>
-        <h1>11 LIT3S HOTEL</h1>
+        <Image src="/logo_purple.png" alt="11 LIT3S Logo" height={800} width={800} />
       </div>
       <Footer />
     </Layout>
