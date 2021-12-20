@@ -1,18 +1,21 @@
-import { useState, useEffect } from "react";
-import Spinner from "../components/Spinner";
+import { useState, useEffect } from "react"; // React state
+import Spinner from "../components/Spinner"; // Spinner component
 import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
-import ReactPlayer from "react-player";
-import { useToasts } from "react-toast-notifications";
+import ReactPlayer from "react-player"; // React video player
+import { useToasts } from "react-toast-notifications"; // Pop up notifications
 
 export default function NFT({ nft }) {
   const { address, activeNetwork, purchaseEdition } = web3.useContainer();
-
   const [loading, setLoading] = useState(false);
-  const [videoReady, setVideoReady] = useState(false);
+
+  // To Do: Build link to OpenSea into the UI
   const [directLink, setDirectLink] = useState(false);
   const { addToast } = useToasts();
 
+  /**
+   * Handle purchase of an NFT with loading state
+   */
   const handlePurchaseWithLoading = async () => {
     setLoading(true);
     const { result, message } = await purchaseEdition(
@@ -33,13 +36,12 @@ export default function NFT({ nft }) {
     setLoading(false);
   };
 
+  /**
+   * Set include opensea URL - could move to NFT creation in web-three state
+   */
   const setDirectLinkOpenSea = async () => {
     let url = `https://testnets.opensea.io/collection/${nft.contractAddress}`;
     setDirectLink(url);
-  };
-
-  const handleVideoPlayerError = () => {
-    console.log("error with video player");
   };
 
   useEffect(() => {
@@ -55,7 +57,6 @@ export default function NFT({ nft }) {
             controls={true}
             width="100%"
             height="100%"
-            onError={handleVideoPlayerError}
           />
         </div>
       </div>

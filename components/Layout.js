@@ -1,5 +1,4 @@
 import Header from "../components/Header"; // Header component
-import Footer from "../components/Footer"; // Header component
 import styles from "../styles/pages/Layout.module.scss"; // Component styles
 
 export default function Layout({ children }) {

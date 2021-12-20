@@ -4,19 +4,19 @@ import { useRouter } from "next/router"; // Router
 import Layout from "../components/Layout"; // Layout wrapper
 import { web3 } from "../containers/index"; // Web3 container
 import styles from "../styles/pages/Create.module.scss"; // Page styles
-import { editions } from "../data/editions"; // Page styles
-import ReactPlayer from "react-player";
+import ReactPlayer from "react-player"; // React player
 
+// Disclaimer: This page was built only to support the creation of Video based Editions for a specific project.
 export default function Create() {
   const router = useRouter(); // Router navigation
-  const [name, setName] = useState(""); // Edition name
-  const [symbol, setSymbol] = useState(""); // Edition symbol
-  const [animationUrl, setAnimationUrl] = useState(""); // Media fee share with past owner
-  const [previewImageUrl, setPreviewImageUrl] = useState(""); // Media fee share with past owner
-  const [editionSize, setEditionSize] = useState(null); // Media fee share with past owner
-  const [royaltyBPS, setRoyaltyBPS] = useState(null); // Media fee share with past owner
+  const [name, setName] = useState(""); // Edition name for ETH contract
+  const [symbol, setSymbol] = useState(""); // Edition symbol for ETH contract
+  const [description, setDescription] = useState(""); // NFT description 
+  const [animationUrl, setAnimationUrl] = useState(""); // Animaiton URL for rich media, IPFS ideally
+  const [previewImageUrl, setPreviewImageUrl] = useState(""); // Preview image, shown on most marketplaces until user goes into NFT detail.
+  const [editionSize, setEditionSize] = useState(null); // Amount of editions, if 0, there will be no limit
+  const [royaltyBPS, setRoyaltyBPS] = useState(null); // Royalty share back to owner on secondary sales.
   const [loading, setLoading] = useState(false); // Global loading state
-  const [description, setDescription] = useState(""); // Media description
 
   // Global state
   const { address, authenticate, createEdition } = web3.useContainer();
