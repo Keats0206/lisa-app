@@ -1,4 +1,4 @@
-import { useState } from "react"; // React state
+import { useState, useEffect } from "react"; // React state
 import Link from "next/link"; // Next link
 import Spinner from "../components/Spinner"; // Spinner component
 import styles from "../styles/components/NFT.module.scss"; // Component styles
@@ -10,7 +10,7 @@ export default function NFT({ nft }) {
   const { address, activeNetwork, purchaseEdition } = web3.useContainer();
   const [loading, setLoading] = useState(false);
   const { addToast } = useToasts();
-
+  const [videoURL, setVideoUrl] = useState("twitter.com");
   /**
    * Handle purchase of an NFT with loading state
    */
@@ -34,17 +34,39 @@ export default function NFT({ nft }) {
     setLoading(false);
   };
 
+  // When there is an error
+  // Then set it back to the original source
+  // Render null instead of player
+  // Rerender player
+  const handleVideoError = () => {
+    console.log("Video error")
+    console.log("Setting video to null")
+    setVideoUrl(null);
+    console.log("Resting with URI again to reload")
+    setVideoUrl(nft.uris[0]);
+  };
+
+  // Render Video
+  const renderVideoContainer = () => (
+    <div className={styles.media}>
+        <ReactPlayer
+          url={videoURL}
+          controls={true}
+          width="100%"
+          height="100%"
+          onError={() => handleVideoError()}
+        />
+    </div>
+  );
+
+  useEffect(() => {
+    setVideoUrl(nft.uris[0]);
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.media_container}>
-        <div className={styles.media}>
-          <ReactPlayer
-            url={nft.uris[0]}
-            controls={true}
-            width="100%"
-            height="100%"
-          />
-        </div>
+      {renderVideoContainer()}
       </div>
       {/* NFT Detail Container */}
       <div className={styles.detail}>

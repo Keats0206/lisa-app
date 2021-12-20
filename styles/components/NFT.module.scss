@@ -103,11 +103,11 @@
   }
 
   .media_container {
-    height: 30%;
     max-width: 700px;
+    height: 40vh;
     justify-content: flex-start;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     padding-right: 0vw;
   }
@@ -124,5 +124,12 @@
       padding-right: 50px;
     }
     padding-bottom: 20px;
+  }
+}
+
+// Responsiveness
+@media screen and (max-width: 700px) {
+  .media_container {
+    height: 20vh;
   }
 }
