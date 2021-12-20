@@ -26,7 +26,7 @@ export default function Home() {
           })}
         </div>
       ) : (
-        <div>
+        <div className={styles.loading}>
           {/* Spinner state */}
           <Spinner />
         </div>
