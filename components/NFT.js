@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"; // React state
+import { useState } from "react"; // React state
+import Link from "next/link"; // Next link
 import Spinner from "../components/Spinner"; // Spinner component
 import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
@@ -8,9 +9,6 @@ import { useToasts } from "react-toast-notifications"; // Pop up notifications
 export default function NFT({ nft }) {
   const { address, activeNetwork, purchaseEdition } = web3.useContainer();
   const [loading, setLoading] = useState(false);
-
-  // To Do: Build link to OpenSea into the UI
-  const [directLink, setDirectLink] = useState(false);
   const { addToast } = useToasts();
 
   /**
@@ -35,18 +33,6 @@ export default function NFT({ nft }) {
     }
     setLoading(false);
   };
-
-  /**
-   * Set include opensea URL - could move to NFT creation in web-three state
-   */
-  const setDirectLinkOpenSea = async () => {
-    let url = `https://testnets.opensea.io/collection/${nft.contractAddress}`;
-    setDirectLink(url);
-  };
-
-  useEffect(() => {
-    setDirectLinkOpenSea();
-  }, []);
 
   return (
     <div className={styles.container}>
@@ -113,10 +99,9 @@ export default function NFT({ nft }) {
             </button>
           </>
         )}
-        {/* <a> */}
-        {/* <a href={directLink}> */}
-        {/* <h4>View Collection on Opensea</h4> */}
-        {/* </a> */}
+        <a href={nft.directLink} target="_blank" rel="noopener noreferrer">
+          View Collection on Zora
+        </a>
       </div>
     </div>
   );

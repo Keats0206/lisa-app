@@ -24,7 +24,7 @@ export default function Footer() {
           />
         </a>
       </div>
-      {/* Lit3s mirror link */}
+      {/* Lit3s mirror page */}
       <div className={styles.mirror_link}>
         <a
           href="https://mirror.xyz/11lit3s.eth/Vk-S00xlWzsTTEvEZBfeuCnOm4_0o2SP74hjKKItWbw"

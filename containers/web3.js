@@ -32,7 +32,7 @@ function useWeb3() {
   const setupWeb3Modal = () => {
     // Creaste new web3Modal
     const web3Modal = new Web3Modal({
-      network: "rinkeby",
+      network: process.env.NEXT_PUBLIC_NETWORK,
       cacheProvider: true,
       providerOptions: providerOptions,
     });
@@ -41,7 +41,7 @@ function useWeb3() {
   };
 
   // Creating infura provider for dApp connection
-  let infura = new ethers.providers.InfuraProvider("rinkeby");
+  let infura = new ethers.providers.InfuraProvider(process.env.NEXT_PUBLIC_NETWORK);
 
   /**
    * Authenticate and store necessary items in global state
@@ -57,13 +57,15 @@ function useWeb3() {
     const address = await signer.getAddress();
     setAddress(address);
     const network = await provider.getNetwork();
-    if (network.name == "rinkeby") {
+    // Checking active chain while user is authenticating
+    if (network.name == process.env.NEXT_PUBLIC_NETWORK) {
       setActiveNetwork(true);
     } else {
       setActiveNetwork(false);
     }
   };
 
+  // Checking active chain on load before user even authenticates
   const checkChain = async () => {
     if (address) {
       const web3Provider = await modal.connect();
@@ -72,7 +74,7 @@ function useWeb3() {
       const provider = new providers.Web3Provider(web3Provider);
       setWeb3Provider(provider);
       const network = provider.getNetwork();
-      if (network.name == "rinkeby") {
+      if (network.name == process.env.NEXT_PUBLIC_NETWORK) {
         setActiveNetwork(true);
       } else {
         setActiveNetwork(false);
@@ -123,13 +125,12 @@ function useWeb3() {
     }
     setNfts(editionNFTs);
     console.log(editionNFTs);
-    // return editionNFTs;
     return;
   };
 
   useEffect(fetchEditions, []);
 
-
+  // Creating NFT Object for the webapp
   const createNFTfromContractAddress = async (contractAddress) => {
     var editionContract = new ethers.Contract(
       contractAddress,
@@ -148,7 +149,6 @@ function useWeb3() {
       const editionSize = await editionContract.editionSize();
       const uris = await editionContract.getURIs(); // array of content URIs
       const totalSupply = await editionContract.totalSupply();
-
       let nftEdition = {
         contractAddress: contractAddress,
         name: name,
@@ -159,6 +159,8 @@ function useWeb3() {
         editionSize: editionSize.toString(),
         uris: uris, // array of content URIs
         totalSupply: totalSupply.toString(),
+        // Zora has no testnet, so this will only work on Mainnet
+        directLink: 'https://zora.co/collections/' + contractAddress
       };
       return nftEdition;
     } catch (error) {

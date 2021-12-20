@@ -37,8 +37,7 @@
   h4 {
     opacity: 0.4;
   }
-  button,
-  a {
+  button {
     height: 50px;
     width: 100%;
     border-radius: 8px;
@@ -51,20 +50,19 @@
     background-color: black;
     color: white;
   }
-  button:last-of-type,
-  a:last-of-type {
+  
+  button:last-of-type {
     margin-right: 0px;
   }
+
   button:focus {
     outline: none;
   }
-  button:hover,
-  a:hover {
+  button:hover {
     opacity: 0.75;
   }
 
-  button:disabled,
-  a:disabled {
+  button:disabled {
     opacity: 0.75;
     cursor: default;
   }
@@ -76,6 +74,19 @@
 
   .nft__button_unlisted {
     color: gray;
+  }
+
+  a {
+    text-align: right;
+    font-weight: 700;
+    font-size: 14px;
+    margin-top: 10px;
+    color: black;
+    opacity: 0.8;
+  }
+
+  a:hover {
+    opacity: 0.3;
   }
 }
 
@@ -89,7 +100,7 @@
     height: 100vh;
     padding-left: 5vw;
     padding-right: 5vw;
-  } 
+  }
 
   .media_container {
     height: 30%;
@@ -105,7 +116,7 @@
     width: 90%;
     order: 2;
   }
-  
+
   .sub_details {
     display: flex;
     flex-direction: row;
