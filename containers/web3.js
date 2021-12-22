@@ -11,7 +11,7 @@ const providerOptions = {
     package: WalletConnectProvider,
     options: {
       // Inject Infura
-      infuraId: process.env.NEXT_PUBLIC_INFURA_ID_RINKEBY,
+      infuraId: process.env.NEXT_PUBLIC_INFURA_ID,
     },
   },
 };
@@ -23,7 +23,10 @@ function useWeb3() {
   const [activeNetwork, setActiveNetwork] = useState(""); // Set Network
   const [nfts, setNfts] = useState(null); // Set Edition NFTs
 
-
+  // Constants
+  const creatorAddress = process.env.NEXT_PUBLIC_ADMIN_WALLET;
+  const factoryContractAddress = process.env.NEXT_PUBLIC_FACTORY_CONTRACT;
+  const factoryABI = require("../contracts/abi/factory.json");
   const minterABI = require("../contracts/abi/minter.json");
 
   /**
@@ -88,19 +91,11 @@ function useWeb3() {
 
   // // Works but is missing the name, symbol and description
   const fetchEditions = async () => {
-    const editionNFTs = [];
-    
-    var contract = require("../contracts/abi/factory.json");
-    // Rinkeby Edition Factory Contract Address
-
-    const creatorAddress = process.env.NEXT_PUBLIC_ADMIN_WALLET;
-
-    const address = "0x85FaDB8Debc0CED38d0647329fC09143d01Af660"
-    // var contractAddress = process.env.NEXT_PUBLIC_RINKEBY_FACTORY_CONTRACT;
+    const editionNFTs = [];    
     // Create ethers connection to factory contract
     var factoryContract = new ethers.Contract(
-      address,
-      contract.abi,
+      factoryContractAddress,
+      factoryABI.abi,
       infura
     );
 
@@ -110,9 +105,9 @@ function useWeb3() {
     );
 
     const events = await factoryContract.queryFilter(eventFilter);
-
-    // Returns a single NFT, useful for testing
     
+    // Returns a single NFT, useful for testing    
+
     // const editionAddress = events[1].args.editionContractAddress;
     // var edition = await createNFTfromContractAddress(editionAddress);
     // editionNFTs.push(edition);
@@ -124,7 +119,6 @@ function useWeb3() {
       editionNFTs.push(edition);
     }
     setNfts(editionNFTs);
-    console.log(editionNFTs);
     return;
   };
 
@@ -208,14 +202,10 @@ function useWeb3() {
     editionSize,
     royaltyBPS
   ) => {
-    // const web3 = createAlchemyWeb3(API_URL);
-    var contract = require("../contracts/abi/factory.json");
-    // Rinkeby Edition Factory Contract Address
-    var contractAddress = "0x85FaDB8Debc0CED38d0647329fC09143d01Af660";
     // Create ethers connection to factory contract
     var factoryContract = new ethers.Contract(
-      contractAddress,
-      contract.abi,
+      factoryContractAddress,
+      factoryABI.abi,
       signer
     );
 
@@ -275,9 +265,9 @@ function useWeb3() {
   };
 
   // Modify Set Sale Price to take in Contract Address
-  const setSalePrice = async (contractAddress, price) => {
+  const setSalePrice = async (mintContractAddress, price) => {
     const mintingContract = new ethers.Contract(
-      contractAddress,
+      mintContractAddress,
       minterABI.abi,
       signer
     );
