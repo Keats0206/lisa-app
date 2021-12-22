@@ -59,10 +59,10 @@
     }
   }
 
-    .header__menu_button_red {
-      color: gray;
-      border: solid 3px red;
-    }
+  .header__menu_button_red {
+    color: gray;
+    border: solid 3px red;
+  }
 
   // Header menu buttons
   .header__menu_button_gray {
@@ -72,45 +72,6 @@
   .header__menu_button_black {
     color: black;
   }
-
-  // .header__menu {
-  //   justify-content: flex-end;
-
-  //   button,
-  //   a {
-  //     height: 50px;
-  //     width: 200px;
-  //     border-radius: 8px;
-  //     font-weight: 700;
-  //     font-size: 16px;
-  //     cursor: pointer;
-  //     text-decoration: none;
-  //     margin: 0px 5px;
-  //     border: solid 3px transparent;
-  //   }
-
-  //   button:last-of-type,
-  //   a:last-of-type {
-  //     margin-right: 0px;
-  //   }
-  //   button:focus {
-  //     outline: none;
-  //   }
-  //   button:hover,
-  //   a:hover {
-  //     opacity: 0.75;
-  //   }
-
-  //   button:disabled,
-  //   a:disabled {
-  //     opacity: 0.75;
-  //     cursor: default;
-  //   }
-  //   .header__menu_button_red {
-  //     color: white;
-  //     border: solid 3px red;
-  //   }
-  // }
 }
 
 // Responsiveness

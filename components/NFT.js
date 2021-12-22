@@ -75,7 +75,7 @@ export default function NFT({ nft }) {
         <p>{nft.description}</p>
         <div className={styles.sub_details}>
           <div>
-            <h4>Price:</h4>
+            <h4>PRICE:</h4>
             {nft.salePrice > 0 ? (
               <h2>{nft.salePrice} ETH</h2>
             ) : (
@@ -83,7 +83,7 @@ export default function NFT({ nft }) {
             )}
           </div>
           <div>
-            <h4>Editions Remaining:</h4>
+            <h4>EDITIONS REMAINING:</h4>
             <h2>
               {nft.editionSize - nft.totalSupply} out of {nft.editionSize}
             </h2>
