@@ -31,10 +31,6 @@ export default function Home() {
           <Spinner />
         </div>
       )}
-      {/* Background logo for homepage */}
-      <div className={styles.background}>
-        <Image src="/logo_purple.png" alt="11 LIT3S Logo" height={800} width={800} />
-      </div>
       <Footer />
     </Layout>
   );

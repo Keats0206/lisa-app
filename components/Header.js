@@ -18,10 +18,12 @@ export default function Header() {
 
   return (
     <div className={styles.header}>
+      <div>
+      </div>
       {/* Logo */}
       <div className={styles.header__logo}>
         <Link href="/">
-          <Image src="/logo.png" alt="11 LIT3S Logo" height={60} width={60} />
+          <Image src="/logo.png" alt="11 LIT3S Logo" height={100} width={100} />
         </Link>
       </div>
       {/* Menu */}

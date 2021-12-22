@@ -1,7 +1,6 @@
 // Page hader
 .header {
-  padding: 0px 20px 0px 20px;
-  margin: 20px auto;
+  padding: 0px 10px 0px 10px;
   display: flex;
   justify-content: space-between;
   -webkit-box-pack: justify;
@@ -20,7 +19,7 @@
   }
 
   .header__logo {
-    justify-content: flex-start;
+    justify-content: center;
 
     a {
       img {
@@ -42,7 +41,6 @@
       font-size: 16px;
       cursor: pointer;
       text-decoration: none;
-      margin: 0px 5px;
       border: transparent;
     }
 
