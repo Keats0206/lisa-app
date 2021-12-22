@@ -73,7 +73,7 @@ export default function Header() {
             onClick={authenticateWithLoading}
             disabled={loading}
           >
-            {loading ? <Spinner /> : "Connect"}
+            {loading ? "Conecting" : "Connect"}
           </button>
         )}
       </div>
