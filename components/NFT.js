@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"; // React state
 import Link from "next/link"; // Next link
-import Spinner from "../components/Spinner"; // Spinner component
 import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
 import ReactPlayer from "react-player"; // React video player
@@ -99,7 +98,7 @@ export default function NFT({ nft }) {
                     onClick={() => handlePurchaseWithLoading()}
                     disabled={loading}
                   >
-                    {loading ? <Spinner /> : "Purchase Edition"}
+                    {loading ? "Purchasing..." : "Purchase Edition"}
                   </button>
                 ) : (
                   <button className={styles.nft__button_noauth} disabled={true}>

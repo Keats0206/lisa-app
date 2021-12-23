@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"; // React state
-import Spinner from "../components/Spinner"; // Loading spinner
 import styles from "../styles/components/NFTAdmin.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
 import ReactPlayer from "react-player"; // Video player
@@ -7,6 +6,7 @@ import { useToasts } from "react-toast-notifications"; // Popup Notifications
 
 export default function NFTAdmin({ nft }) {
   const {
+    networkName,
     getContractBalance,
     setSalePrice,
     withdrawEditionBalance,
@@ -52,13 +52,13 @@ export default function NFTAdmin({ nft }) {
 
   /**
    * Handle get balance of ETH currently available in contract
-  */
+   */
   const handleGetContractBalance = async () => {
     let eth = await getContractBalance(nft.contractAddress);
     setValueInContract(eth);
   };
 
-   /**
+  /**
    * Handle get royalty info on NFT
    */
   const getRoyaltyInfo = async () => {
@@ -123,7 +123,6 @@ export default function NFTAdmin({ nft }) {
         {/* NFT Admin Actions */}
         <div>
           <div className={styles.action_form}>
-
             {/* Set for sale, or change price */}
             <div>
               <h4>Set or change sale price:</h4>
@@ -146,7 +145,7 @@ export default function NFTAdmin({ nft }) {
                   !newPrice // No New Price provided
                 }
               >
-                {loading ? <Spinner /> : "Update Sale Price"}
+                {loading ? "Updating..." : "Update Sale Price"}
               </button>
             </div>
 
@@ -158,10 +157,29 @@ export default function NFTAdmin({ nft }) {
                 Only the contract owner can withdraw these funds
               </span>
               <button onClick={() => handleWithdrawETH()}>
-                {loading ? <Spinner /> : "Withdraw ETH"}
+                {loading ? "Withdrawing..." : "Withdraw ETH"}
               </button>
             </div>
           </div>
+        </div>
+        <div>
+          {networkName == "rinkeby" ? (
+            <a
+              href={"https://rinkeby.etherscan.io/address/" + nft.contractAddress}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View Edition on Etherscan
+            </a>
+          ) : (
+            <a
+              href={"https://etherscan.io/address/" + nft.contractAddress}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View Edition on Etherscan
+            </a>
+          )}
         </div>
       </div>
       <div className={styles.media}>
