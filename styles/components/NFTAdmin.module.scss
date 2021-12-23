@@ -6,7 +6,9 @@
   border-radius: 8px;
   background-color: whitesmoke;
   backdrop-filter: blur(3px);
+  margin-top: 10x;
 }
+
 .sub_details {
   display: flex;
   flex-direction: row;
@@ -64,13 +66,13 @@
 }
 
 .action_form {
-
   div{
     border: 1px solid lightgray;
     border-radius: 8px;
     padding: 0px 10px 20px 10px;
     display: block;
     margin-block-end: 20px;
+    padding-top: 20px;
   }
 
   label {

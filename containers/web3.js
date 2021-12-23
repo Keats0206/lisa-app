@@ -20,7 +20,8 @@ function useWeb3() {
   const [modal, setModal] = useState(null); // Web3Modal
   const [address, setAddress] = useState(null); // ETH address
   const [signer, setSigner] = useState(null); // ETH address
-  const [activeNetwork, setActiveNetwork] = useState(""); // Set Network
+  const [activeNetwork, setActiveNetwork] = useState(""); // Set Network (BOOL)
+  const [networkName, setNetworkName] = useState(""); // Set Network (BOOL)
   const [nfts, setNfts] = useState(null); // Set Edition NFTs
 
   // Constants
@@ -60,6 +61,8 @@ function useWeb3() {
     const address = await signer.getAddress();
     setAddress(address);
     const network = await provider.getNetwork();
+    setNetworkName(network.name);
+    console.log(network.name)
     // Checking active chain while user is authenticating
     if (network.name == process.env.NEXT_PUBLIC_NETWORK) {
       setActiveNetwork(true);
@@ -367,6 +370,7 @@ function useWeb3() {
     address,
     authenticate,
     nfts,
+    networkName,
     activeNetwork,
     createEdition,
     setSalePrice,
