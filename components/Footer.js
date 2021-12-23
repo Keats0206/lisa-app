@@ -31,7 +31,7 @@ export default function Footer() {
           target="_blank"
           rel="noreferrer"
         >
-          Learn more about The 11 LIT3S HOTEL.
+          Learn more about The 11 LIT3S HOTEL
         </a>
       </div>
     </div>
