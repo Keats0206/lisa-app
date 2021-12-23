@@ -1,6 +1,5 @@
 import Link from "next/link"; // Dynamic routing
 import Image from "next/image"; // Next image
-import Spinner from "../components/Spinner"; // Loading state spinner for button
 import { useState } from "react"; // State management
 import { web3 } from "../containers/index"; // Global state
 import styles from "../styles/components/Header.module.scss"; // Component styles
@@ -73,7 +72,7 @@ export default function Header() {
             onClick={authenticateWithLoading}
             disabled={loading}
           >
-            {loading ? <Spinner /> : "Connect"}
+            {loading ? "Connecting..." : "Connect"}
           </button>
         )}
       </div>

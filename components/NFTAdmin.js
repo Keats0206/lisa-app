@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"; // React state
-import Spinner from "../components/Spinner"; // Loading spinner
 import styles from "../styles/components/NFTAdmin.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
 import ReactPlayer from "react-player"; // Video player
@@ -146,7 +145,7 @@ export default function NFTAdmin({ nft }) {
                   !newPrice // No New Price provided
                 }
               >
-                {loading ? <Spinner /> : "Update Sale Price"}
+                {loading ? "Updating..." : "Update Sale Price"}
               </button>
             </div>
 
@@ -158,7 +157,7 @@ export default function NFTAdmin({ nft }) {
                 Only the contract owner can withdraw these funds
               </span>
               <button onClick={() => handleWithdrawETH()}>
-                {loading ? <Spinner /> : "Withdraw ETH"}
+                {loading ? "Withdrawing..." : "Withdraw ETH"}
               </button>
             </div>
           </div>
