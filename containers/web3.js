@@ -140,7 +140,7 @@ function useWeb3() {
       const symbol = await editionContract.symbol();
       // const description = await editionContract.description(); //No getter for description at the moment
       // Supplementing description with manual data for now
-      const description = name == "Gemini" ? editions[0].description : editions[1].description
+      const description = name == "GEMINI" ? editions[0].description : editions[1].description
       const owner = await editionContract.owner();
       const salePrice = await editionContract.salePrice();
       const editionSize = await editionContract.editionSize();
