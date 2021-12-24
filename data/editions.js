@@ -3,7 +3,7 @@ let gemini = {
   name: "Gemini",
   symbol: "11LIT3SHotel",
   description:
-    "Energy flows, synergy woes. To love one that is two, is a dangerous endeavor. When you look at yourself in the mirror is it you that you see or who you're pretending to be? Who is the one that you're showing to me? You cast a spell and I fly, then you drop me from the sky. Which side will I get from my Gemini?",
+    "Energy flows, synergy woes. To love one that is two, is a dangerous endeavor. When you look at yourself in the mirror, is it you that you see or who you're pretending to be? Who is the one that you're showing to me? You cast a spell and I fly, then you drop me from the sky. Which side will I get, from my Gemini?",
   imageUrl: "https://gateway.pinata.cloud/ipfs/QmcKmyrvP5kkDaD2B8Z9mfc2zDmNMNYF3keGrmZP8YijiT",
   animationUrl:
     "https://gateway.pinata.cloud/ipfs/QmX13sSh8VqmAsgCwdMegj2ZhNQFPUbwifF944gFHhVTr8",
