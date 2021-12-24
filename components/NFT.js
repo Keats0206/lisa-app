@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"; // React state
-import Link from "next/link"; // Next link
 import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
 import ReactPlayer from "react-player"; // React video player
