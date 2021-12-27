@@ -4,11 +4,15 @@ import { web3 } from "../containers/index"; // Web3 container
 import ReactPlayer from "react-player"; // React video player
 import { useToasts } from "react-toast-notifications"; // Pop up notifications
 
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 export default function NFT({ nft }) {
   const { address, activeNetwork, purchaseEdition } = web3.useContainer();
   const [loading, setLoading] = useState(false);
   const { addToast } = useToasts();
   const [videoURL, setVideoUrl] = useState("twitter.com");
+  const [videoReady, setVideoReady] = useState(false);
   /**
    * Handle purchase of an NFT with loading state
    */
@@ -32,30 +36,31 @@ export default function NFT({ nft }) {
     setLoading(false);
   };
 
-  // When there is an error
-  // Then set it back to the original source
-  // Render null instead of player
-  // Rerender player
-  const handleVideoError = () => {
-    console.log("Video error")
-    console.log("Setting video to null")
-    setVideoUrl(null);
-    console.log("Resting with URI again to reload")
-    setVideoUrl(nft.uris[0]);
+  // Render Video
+  const renderVideoPlayer= () => (
+    <ReactPlayer
+      url={videoURL}
+      controls={true}
+      width="100%"
+      height="100%"
+      onError={() => handleVideoError()}
+      onReady={() => handleVideoReady()}
+    />
+  );
+
+  // Handle video ready to play
+  const handleVideoReady = () => {
+    setVideoReady(true);
   };
 
-  // Render Video
-  const renderVideoContainer = () => (
-    <div className={styles.media}>
-        <ReactPlayer
-          url={videoURL}
-          controls={true}
-          width="100%"
-          height="100%"
-          onError={() => handleVideoError()}
-        />
-    </div>
-  );
+  const handleVideoError = () => {
+    // On error, set playerURL to null
+    setVideoUrl(null);
+    // Set url back to nft uri, causes player to reload.
+    setVideoUrl(nft.uris[0]);
+    // If succesfull, onReady will be called, which will hide skeleton loading and show the video
+  };
+
 
   useEffect(() => {
     setVideoUrl(nft.uris[0]);
@@ -64,7 +69,10 @@ export default function NFT({ nft }) {
   return (
     <div className={styles.container}>
       <div className={styles.media_container}>
-      {renderVideoContainer()}
+        {/* Render skeleton for initial state, when videoReady, hide */}
+        <Skeleton height="100%" width="100%" style={{display: videoReady ? "none" : "block"}}/>
+        {/* Render video in background, when ready, display video */}
+        <div style={{display: videoReady ? "block" : "none"}}>{renderVideoPlayer()}</div>
       </div>
       {/* NFT Detail Container */}
       <div className={styles.detail}>
