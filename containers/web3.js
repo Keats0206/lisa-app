@@ -3,7 +3,7 @@ import { ethers, providers } from "ethers"; // Ethers
 import { useState, useEffect } from "react"; // State management
 import { createContainer } from "unstated-next"; // Unstated-next containerization
 import WalletConnectProvider from "@walletconnect/web3-provider"; // WalletConnectProvider (Web3Modal)
-import {editions} from "../data/editions"
+import { editions } from "../data/editions";
 
 // Web3Modal provider options
 const providerOptions = {
@@ -45,7 +45,9 @@ function useWeb3() {
   };
 
   // Creating infura provider for dApp connection
-  let infura = new ethers.providers.InfuraProvider(process.env.NEXT_PUBLIC_NETWORK);
+  let infura = new ethers.providers.InfuraProvider(
+    process.env.NEXT_PUBLIC_NETWORK
+  );
 
   /**
    * Authenticate and store necessary items in global state
@@ -62,7 +64,7 @@ function useWeb3() {
     setAddress(address);
     const network = await provider.getNetwork();
     setNetworkName(network.name);
-    console.log(network.name)
+    console.log(network.name);
     // Checking active chain while user is authenticating
     if (network.name == process.env.NEXT_PUBLIC_NETWORK) {
       setActiveNetwork(true);
@@ -94,7 +96,7 @@ function useWeb3() {
 
   // // Works but is missing the name, symbol and description
   const fetchEditions = async () => {
-    const editionNFTs = [];    
+    const editionNFTs = [];
     // Create ethers connection to factory contract
     var factoryContract = new ethers.Contract(
       factoryContractAddress,
@@ -108,8 +110,8 @@ function useWeb3() {
     );
 
     const events = await factoryContract.queryFilter(eventFilter);
-    
-    // Returns a single NFT, useful for testing    
+
+    // Returns a single NFT, useful for testing
 
     // const editionAddress = events[1].args.editionContractAddress;
     // var edition = await createNFTfromContractAddress(editionAddress);
@@ -140,7 +142,8 @@ function useWeb3() {
       const symbol = await editionContract.symbol();
       // const description = await editionContract.description(); //No getter for description at the moment
       // Supplementing description with manual data for now
-      const description = name == "GEMINI" ? editions[0].description : editions[1].description
+      const description =
+        name == "GEMINI" ? editions[0].description : editions[1].description;
       const owner = await editionContract.owner();
       const salePrice = await editionContract.salePrice();
       const editionSize = await editionContract.editionSize();
@@ -157,7 +160,7 @@ function useWeb3() {
         uris: uris, // array of content URIs
         totalSupply: totalSupply.toString(),
         // Zora has no testnet, so this will only work on Mainnet
-        directLink: 'https://zora.co/collections/' + contractAddress
+        directLink: "https://zora.co/collections/" + contractAddress,
       };
       return nftEdition;
     } catch (error) {
@@ -165,7 +168,7 @@ function useWeb3() {
     }
   };
 
-  const  getContractRoyaltyInfo = async (contractAddress, salePrice) => {
+  const getContractRoyaltyInfo = async (contractAddress, salePrice) => {
     var editionContract = new ethers.Contract(
       contractAddress,
       minterABI.abi,
@@ -177,14 +180,13 @@ function useWeb3() {
       const royalty = await editionContract.royaltyInfo(0, 100);
       const royaltyInfo = {
         receiver: royalty.receiver,
-        amount: royalty.royaltyAmount.toNumber()
-      }
+        amount: royalty.royaltyAmount.toNumber(),
+      };
       return royaltyInfo;
     } catch (error) {
       console.log(error);
     }
   };
-
 
   /// @param _name Name of the edition contract
   /// @param _symbol Symbol of the edition contract
@@ -260,10 +262,17 @@ function useWeb3() {
           "Succesfully purchased NFT! Patience, blockchain can be slow. The NFT will be in your wallet soon!",
       };
     } catch (error) {
-      return {
-        result: false,
-        message: "Transaction failed, try again!",
-      };
+      if (error.code == "INSUFFICIENT_FUNDS") {
+        return {
+          result: false,
+          message: "Insufficient funds in your wallet!",
+        };
+      } else {
+        return {
+          result: false,
+          message: "Oops, transaction failed. Try again!",
+        };
+      }
     }
   };
 
@@ -381,7 +390,7 @@ function useWeb3() {
     withdrawEditionBalance,
     fetchEditions,
     createNFTfromContractAddress,
-    getContractRoyaltyInfo
+    getContractRoyaltyInfo,
   };
 }
 
