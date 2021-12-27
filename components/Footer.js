@@ -6,7 +6,7 @@ export default function Footer() {
     <div className={styles.container}>
       <div className={styles.social_links}>
         {/* Lit3s twitter page */}
-        <a href="https://twitter.com/11LIT3S" target="_blank"  rel="noreferrer">
+        <a href="https://twitter.com/The11LIT3SHotel" target="_blank"  rel="noreferrer">
           <Image
             src="/twitter.png"
             alt="11 LIT3S Logo"
