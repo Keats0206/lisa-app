@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"; // React state
 import Layout from "../components/Layout"; // Layout
-import Link from "next/Link"; // Next image support
+import Link from "next/link"; // Next image support
 import Footer from "../components/Footer"; // Footer component
 import styles from "../styles/pages/Home.module.scss"; // Home styling
 import { web3 } from "../containers/index"; // Web3 container
