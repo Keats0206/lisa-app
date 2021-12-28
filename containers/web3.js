@@ -92,7 +92,6 @@ function useWeb3() {
 
   // // Works but is missing the name, symbol and description
   const fetchCreatorContracts = async (creatorAddress) => {
-    const creatorContracts = [];
     // Create ethers connection to factory contract
     var factoryContract = new ethers.Contract(
       factoryContractAddress,
@@ -106,15 +105,22 @@ function useWeb3() {
     );
 
     const events = await factoryContract.queryFilter(eventFilter);
-
+    
     console.log(events);
 
-
+    const creatorContracts = [];
     for (let i = 0; i < events.length; i++) {
+      console.log(events[i].args.creator);
+      console.log(creatorAddress);
       // for each contract address call the create nft function
-      const creatorContractAddress = events[i].args.creatorContractAddress;
-      var contractAddress = await sanitizeContractData(creatorContractAddress);
-      creatorContracts.push(contractAddress);
+      if (events[i].args.creator == creatorAddress) {
+        console.log(events[i].args)
+        const creatorContractAddress = events[i].args.creatorContractAddress;
+        var contractAddress = await sanitizeContractData(
+          creatorContractAddress
+        );
+        creatorContracts.push(contractAddress);
+      }
     }
     return creatorContracts;
   };
@@ -132,7 +138,7 @@ function useWeb3() {
       let contract = {
         contractAddress: contractAddress,
         name: name,
-        symbol: symbol
+        symbol: symbol,
       };
       return contract;
     } catch (error) {
@@ -155,9 +161,8 @@ function useWeb3() {
       console.log(tx);
       return {
         result: true,
-        message:
-          "Succesfully created creator contract!",
-        tx: tx.hash
+        message: "Succesfully created creator contract!",
+        tx: tx.hash,
       };
     } catch (error) {
       return {
@@ -183,7 +188,7 @@ function useWeb3() {
     networkName,
     activeNetwork,
     createCreatorNFTContract,
-    fetchCreatorContracts
+    fetchCreatorContracts,
   };
 }
 

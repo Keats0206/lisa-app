@@ -9,9 +9,9 @@ export default function Contracts() {
   const [editions, setEditions] = useState(null); // NFT state
   const { address, fetchCreatorContracts } = web3.useContainer(); // Use NFTs from global state
 
-  const fetchContracts = async () => {
+  const fetchContracts = async (addr) => {
     try {
-      const data = await fetchCreatorContracts(address);
+      const data = await fetchCreatorContracts(addr);
       setEditions(data);
     } catch (e) {
       console.log("Error when executing: ", e);
@@ -19,8 +19,8 @@ export default function Contracts() {
   };
 
   useEffect(() => {
-    fetchContracts();
-  }, []);
+    fetchContracts(address);
+  }, [address]);
 
   return (
     <Layout>
