@@ -20,9 +20,6 @@ export default function Navigation() {
         <Link href="/">
           <a>Lisa</a>
         </Link>
-        <Link href="/">
-          <a>L</a>
-        </Link>
       </div>    
       {/* Menu */}
       <div className={styles.navigation_footer}>

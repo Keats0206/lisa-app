@@ -2,12 +2,18 @@
   display: flex;
   flex-direction: row;
   position: relative;
+  padding-inline: 150px;
+}
+
+.navigation {
+  max-width: 300px;
+  min-width: 250px;
+  width: 20vw;
 }
 
 .content {
   width: 70vw;
-  position: absolute;
-  right: 50px;
+  position: inline;
 }
 
 .no_auth{
