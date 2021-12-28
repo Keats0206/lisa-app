@@ -57,42 +57,16 @@
 // Create page authenticated state
 .create {
   display: block;
-  margin: 0px auto;
+  margin: auto auto;
   width: 100%;
-  max-width: 1200px;
-  padding-bottom: 50px;
-
-  // Create grid layout
-  .create__grid {
-    display: inline-grid;
-    width: 100%;
-    column-gap: 30px;
-    grid-template-columns: repeat(12, 1fr);
-
-    // Input container
-    .create__grid_left {
-      height: auto;
-      grid-column: 1 / 7;
-    }
-
-    // Preview container
-    .create__grid_right {
-      height: auto;
-      grid-column: 8 / 13;
-    }
-
-    div {
-      > h2 {
-        font-weight: 500;
-        font-size: 30px;
-      }
-    }
-  }
+  max-width: 1000px;
+  min-height: 100vh;
+  padding: 0 10vw;
 }
 
 .create__upload {
   width: calc(100% - 4px);
-  border: 2px solid white(255, 255, 255, 0.1);
+  border: 2px solid white(0, 0, 0, 0.1);
   padding: 10px 0px 0px;
 
   > div {
@@ -122,19 +96,20 @@
         font-weight: 400;
         transition: all 0.1s ease-in 0s;
         border: 3px solid transparent;
-        background: rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.1);
         outline: none;
+        color: white;
       }
 
       input:focus,
       textarea:focus {
         outline: none;
-        border-color: rgba(0, 0, 0, 0);
+        border-color: rgba(255, 255, 255, 255);
       }
 
       > span {
         display: block;
-        color: rgba(0, 0, 0, 0.7);
+        color: rgba(255, 255, 255, 0.7);
         padding-bottom: 15px;
         text-align: left;
       }
@@ -146,7 +121,7 @@
   }
 
   > div:nth-of-type(2) {
-    border-top: 2px solid rgba(0, 0, 0, 0.1);
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
     text-align: right;
 
     button {
@@ -168,7 +143,7 @@
 }
 
 .create__upload_required {
-  color: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.3);
 }
 
 // Error to display for fee share field
@@ -179,38 +154,6 @@
   font-size: 14px;
   color: #ff0033 !important;
   text-align: right !important;
-}
-
-// Media upload field
-.upload__field {
-  padding: 15px;
-  width: 100%;
-  height: 100px;
-  font-size: 15px;
-  line-height: 14px;
-  font-weight: 400;
-  transition: all 0.1s ease-in 0s;
-  color: black;
-  border: 2px dashed rgba(0, 0, 0, 0.05);
-  background: rgba(0, 0, 0, 0.05);
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  > span {
-    display: block;
-    text-align: center !important;
-    line-height: 70px;
-    width: 100%;
-    color: rgba(255, 255, 255, 0.5);
-    padding-bottom: 0px !important;
-  }
-}
-
-.upload__field:hover {
-  opacity: 0.7;
 }
 
 .create__preview {

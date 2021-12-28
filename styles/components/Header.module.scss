@@ -1,6 +1,6 @@
 // Page hader
 .header {
-  padding: 0px 10px 0px 10px;
+  padding: 10px 10px 10px 10px;
   display: flex;
   justify-content: space-between;
   -webkit-box-pack: justify;
@@ -8,8 +8,12 @@
   position: sticky;
   top: 0px;
   z-index: 9999;
-  background-color: white;
-  border-bottom: 2px solid lightgray;
+  border-bottom: 2px solid #282828;
+  color: white;
+  background-color: rgba($color: #000000, $alpha: 0.8);
+  backdrop-filter: blur(2px);
+
+
 
   div {
     width: auto;
@@ -19,13 +23,13 @@
   }
 
   .header__logo {
-    justify-content: center;
+    justify-content: flex-start;
+    font-family: 'Playball', cursive;
 
     a {
-      img {
-        width: 30px;
-        height: 30px;
-      }
+      font-size: 30px;
+      color: white;
+      text-decoration: none;
     }
   }
 
@@ -36,12 +40,11 @@
     a {
       padding: 18px 25px;
       font-weight: 500;
-      border-radius: 8px;
+      border-radius: 15px;
       font-weight: 700;
       font-size: 16px;
       cursor: pointer;
       text-decoration: none;
-      border: transparent;
     }
 
     button:last-of-type,
@@ -66,11 +69,9 @@
 
   // Header menu buttons
   .header__menu_button_gray {
-    background-color: rgb(216, 216, 216);
-  }
-
-  .header__menu_button_black {
-    color: black;
+    background-color: transparent;
+    color: white;
+    border: 3px solid rgba($color: #ffffff, $alpha: 0.2);
   }
 }
 

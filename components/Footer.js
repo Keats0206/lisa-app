@@ -4,34 +4,13 @@ import Image from "next/image"; // Next image
 export default function Footer() {
   return (
     <div className={styles.container}>
-      <div className={styles.social_links}>
-        {/* Lit3s twitter page */}
-        <a href="https://twitter.com/The11LIT3SHotel" target="_blank"  rel="noreferrer">
-          <Image
-            src="/twitter.png"
-            alt="11 LIT3S Logo"
-            height={30}
-            width={30}
-          />
-        </a>
-        {/* Lit3s discord page */}
-        <a href="https://11LIT3S.com/discord" target="_blank"  rel="noreferrer">
-          <Image
-            src="/discord.png"
-            alt="11 LIT3S Logo"
-            height={30}
-            width={30}
-          />
-        </a>
-      </div>
-      {/* Lit3s mirror page */}
       <div className={styles.mirror_link}>
         <a
-          href="https://mirror.xyz/11lit3s.eth/DJ69BuBdnv2RFCVeFH_dQfWt1qOjfEV5ajlxvADFiU4"
+          href="https://twitter.com/0xpkeating"
           target="_blank"
           rel="noreferrer"
         >
-          Learn more about The 11 LIT3S HOTEL
+          Built by Pete Keating
         </a>
       </div>
     </div>

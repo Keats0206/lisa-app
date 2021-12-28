@@ -1,5 +1,4 @@
 import Link from "next/link"; // Dynamic routing
-import Image from "next/image"; // Next image
 import { useState } from "react"; // State management
 import { web3 } from "../containers/index"; // Global state
 import styles from "../styles/components/Header.module.scss"; // Component styles
@@ -17,12 +16,10 @@ export default function Header() {
 
   return (
     <div className={styles.header}>
-      <div>
-      </div>
       {/* Logo */}
       <div className={styles.header__logo}>
         <Link href="/">
-          <Image src="/logo.png" alt="11 LIT3S Logo" height={100} width={100} />
+          <a>Lisa</a>
         </Link>
       </div>
       {/* Menu */}
@@ -33,19 +30,6 @@ export default function Header() {
             {/* Is user on the correct network, set in the .env file & web3 container */}
             {activeNetwork ? (
               <>
-                {/* Is user the admin */}
-                {address == process.env.NEXT_PUBLIC_ADMIN_WALLET ? (
-                  <>
-                    <Link href={`/create`}>
-                      <a className={styles.header__menu_button_black}>Create</a>
-                    </Link>
-                    <Link href={`/admin`}>
-                      <a className={styles.header__menu_button_black}>Admin</a>
-                    </Link>
-                  </>
-                ) : (
-                  <></>
-                )}
                 {/* Show authenticated address  */}
                 <button className={styles.header__menu_button_gray}>
                   {address.substr(0, 5) +

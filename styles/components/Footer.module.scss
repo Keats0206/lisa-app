@@ -5,33 +5,16 @@
   text-align: center;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
-.mirror_link {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  
+.mirror_link {  
   a {
     padding: 10px 30px 0px 0px;
-    color: black;
+    color: white;
+    opacity: 0.5;
     font-size: 16px;
-    font-weight: 600;
-  }
-}
-
-.social_links {
-  display: flex;
-
-  a {
-    padding: 10px 0px 0px 30px;
-  }
-}
-
-.detail {
-  h2 {
-    font-size: 20px;
+    font-weight: 400;
   }
 }
 
@@ -44,7 +27,7 @@
 
     a {
       padding: 10px 30px 0px 0px;
-      color: black;
+      color: white;
       font-size: 14px;
       font-weight: 600;
     }

@@ -3,7 +3,6 @@ import styles from "../styles/components/NFT.module.scss"; // Component styles
 import { web3 } from "../containers/index"; // Web3 container
 import ReactPlayer from "react-player"; // React video player
 import { useToasts } from "react-toast-notifications"; // Pop up notifications
-
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
