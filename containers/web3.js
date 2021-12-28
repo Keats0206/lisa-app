@@ -61,7 +61,6 @@ function useWeb3() {
     setAddress(address);
     const network = await provider.getNetwork();
     setNetworkName(network.name);
-    console.log(network.name);
     // Checking active chain while user is authenticating
     if (network.name == process.env.NEXT_PUBLIC_NETWORK) {
       setActiveNetwork(true);
@@ -107,6 +106,9 @@ function useWeb3() {
     );
 
     const events = await factoryContract.queryFilter(eventFilter);
+
+    console.log(events);
+
 
     for (let i = 0; i < events.length; i++) {
       // for each contract address call the create nft function

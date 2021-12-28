@@ -1,68 +1,23 @@
 import { useState, useEffect } from "react"; // React state
 import Layout from "../components/Layout"; // Layout
-import Link from "next/link"; // Next image support
-import Footer from "../components/Footer"; // Footer component
 import styles from "../styles/pages/Home.module.scss"; // Home styling
 import { web3 } from "../containers/index"; // Web3 container
+import { useRouter } from "next/router"; // Router
 
 export default function Home() {
   const [editions, setEditions] = useState(null); // NFT state
   const { address, fetchCreatorContracts } = web3.useContainer(); // Use NFTs from global state
-
-  const fetchContracts = async () => {
-    try {
-      const data = await fetchCreatorContracts(address);
-      setEditions(data);
-    } catch (e) {
-      console.log("Error when executing: ", e);
-    }
-  };
-
+  const router = useRouter(); // Router navigation
 
   useEffect(() => {
-    fetchContracts();
-  }, [address]);
+    router.push("/contracts"); // Redirect to success page
+  }, []);
 
   return (
     <Layout>
       <div className={styles.container}>
-        <div className={styles.collections_header}>
-          <h1>Your Contracts</h1>
-          <div>
-            <Link href="/create">
-              <a>Create Collection</a>
-            </Link>
-          </div>
-        </div>
-        <div className={styles.collections_table}>
-          <div className={styles.collections_table_header}>
-            <p>Name</p>
-            <p>Symbol</p>
-            <p>Token Type</p>
-          </div>
-        </div>
-        {editions && editions.length > 0 ? (
-          <>
-            {editions.map((edition, i) => {
-              return (
-                <div 
-                  className={styles.collections_row}
-                  key={i}
-                > 
-                  <p>{edition.name}</p>
-                  <p>{edition.symbol}</p>
-                  <p>ERC721</p>
-                </div>
-              );
-            })}
-          </>
-        ) : (
-          <div className={styles.collections_no_date}>
-            No editions, try creating one
-          </div>
-        )}
+        <h1>Lisa Studio</h1>
       </div>
-      <Footer />
     </Layout>
   );
 }
