@@ -21,7 +21,6 @@ function useWeb3() {
   const [signer, setSigner] = useState(null); // ETH address
   const [activeNetwork, setActiveNetwork] = useState(""); // Set Network (BOOL)
   const [networkName, setNetworkName] = useState(""); // Set Network (BOOL)
-  const [contracts, setContracts] = useState(null); // Creator Contract Objects
 
   // Constants
   const factoryContractAddress = process.env.NEXT_PUBLIC_FACTORY_CONTRACT;
@@ -93,7 +92,7 @@ function useWeb3() {
   useEffect(checkChain, []);
 
   // // Works but is missing the name, symbol and description
-  const fetchCreatorContracts = async () => {
+  const fetchCreatorContracts = async (creatorAddress) => {
     const creatorContracts = [];
     // Create ethers connection to factory contract
     var factoryContract = new ethers.Contract(
@@ -104,7 +103,7 @@ function useWeb3() {
 
     const eventFilter = factoryContract.filters.CreatedContract(
       null,
-      address
+      creatorAddress
     );
 
     const events = await factoryContract.queryFilter(eventFilter);
@@ -115,13 +114,9 @@ function useWeb3() {
       var contractAddress = await sanitizeContractData(creatorContractAddress);
       creatorContracts.push(contractAddress);
     }
-    setContracts(creatorContracts);
-    return;
+    return creatorContracts;
   };
 
-  useEffect(fetchCreatorContracts, []);
-
-  // 
   const sanitizeContractData = async (contractAddress) => {
     var creatorContract = new ethers.Contract(
       contractAddress,
@@ -186,7 +181,7 @@ function useWeb3() {
     networkName,
     activeNetwork,
     createCreatorNFTContract,
-    contracts
+    fetchCreatorContracts
   };
 }
 

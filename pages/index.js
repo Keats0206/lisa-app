@@ -7,12 +7,21 @@ import { web3 } from "../containers/index"; // Web3 container
 
 export default function Home() {
   const [editions, setEditions] = useState(null); // NFT state
-  const { contracts } = web3.useContainer(); // Use NFTs from global state
+  const { address, fetchCreatorContracts } = web3.useContainer(); // Use NFTs from global state
+
+  const fetchContracts = async () => {
+    try {
+      const data = await fetchCreatorContracts(address);
+      setEditions(data);
+    } catch (e) {
+      console.log("Error when executing: ", e);
+    }
+  };
+
 
   useEffect(() => {
-    setEditions(contracts);
-    console.log(contracts);
-  }, [contracts]);
+    fetchContracts();
+  }, [address]);
 
   return (
     <Layout>

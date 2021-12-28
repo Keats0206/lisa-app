@@ -4,24 +4,12 @@
   min-height: 100vh;
 }
 
-.background {
-  position: fixed;
+.no_auth{
+  width: 100vw;
+  height: 90vh;
   display: flex;
-  flex-direction: column;
+  text-align: center;
   align-items: center;
   justify-content: center;
-  top: 0;
-  left: 0; 
-  right: 0; 
-  margin-left: auto; 
-  margin-right: auto; 
-  width: 75vw;
-  height: 100%;
-  z-index: -100;
-
-  h1{
-    font-size: 70px;
-    color: purple;
-    font-family: 'Syne', sans-serif;
-  }
+  opacity: 0.5;
 }
