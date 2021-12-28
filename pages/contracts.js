@@ -18,6 +18,12 @@ export default function Contracts() {
     }
   };
 
+  const handleRowClick = (contractAdress) => {
+      const url = "https://rinkeby.etherscan.io/address/" + contractAdress
+      const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+      if (newWindow) newWindow.opener = null
+  }
+
   useEffect(() => {
     fetchContracts(address);
   }, [address]);
@@ -26,38 +32,37 @@ export default function Contracts() {
     <Layout>
       <div className={styles.container}>
         <div className={styles.collections_header}>
-          <h1>Your Contracts</h1>
+          <h2>Your Contracts</h2>
           <div>
             <Link href="/create">
               <a>Create Collection</a>
             </Link>
           </div>
         </div>
-        <div className={styles.collections_table}>
-          <div className={styles.collections_table_header}>
-            <p>Name</p>
-            <p>Symbol</p>
-            <p>Token Type</p>
-            <p>Etherscan</p>
-          </div>
-        </div>
         {editions && editions.length > 0 ? (
           <>
-            {editions.map((edition, i) => {
-              return (
-                <div 
-                  className={styles.collections_row}
-                  key={i}
-                > 
-                  <p>{edition.name}</p>
-                  <p>{edition.symbol}</p>
-                  <p>ERC721</p>
-                  <a>
-                    Etherscan
-                  </a>
-                </div>
-              );
-            })}
+            <table className={styles.collections_table}>
+              <thead className={styles.collections_table_header}>
+                <th>Name</th>
+                <th>Symbol</th>
+                <th>Token Type</th>
+              </thead>
+              <tbody>
+              {editions.map((edition, i) => {
+                  return (
+                    <tr 
+                      className={styles.collections_row}
+                      key={i}
+                      onClick={()=>handleRowClick(edition.contractAddress)}
+                    > 
+                      <td>{edition.name}</td>
+                      <td>{edition.symbol}</td>
+                      <td>ERC721</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </>
         ) : (
           <div className={styles.collections_no_date}>

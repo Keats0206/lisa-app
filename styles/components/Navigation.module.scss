@@ -2,17 +2,11 @@
 
 
 .navigation {
-  max-width: 300px;
-  min-width: 200px;
-  height: 100vh;
-  border-right: 2px solid #282828;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  -webkit-box-pack: justify;
-  position: fixed;
-  color: white;
-
+  height: 100vh;
+  padding: 30px;
 
   .navigation_logo {
     visibility: visible; 
@@ -50,11 +44,6 @@
   }
 
   .navigation_footer{
-    align-content: flex-end;
-    padding-bottom: 30px;
-    width: 100%;
-    padding-right: 20px;
-
     button,
     a {
       width: 100%;
@@ -65,8 +54,9 @@
       font-size: 16px;
       cursor: pointer;
       text-decoration: none;
-      color: rgba($color: #ffffff, $alpha: 0.2);
-      border: 1px solid rgba($color: #ffffff, $alpha: 1.0);
+      color: rgba($color: #ffffff, $alpha: .5);
+      border: 2px solid rgba($color: #ffffff, $alpha: 0.3);
+      transition: all 0.5s ease;
     }
 
     button:last-of-type,
@@ -80,13 +70,14 @@
 
     button:hover,
     a:hover {
-      opacity: 0.75;
+      background-color: rgba($color: #161616, $alpha: 0.8);
+      border: 2px solid rgba($color: #30d5c8, $alpha: 0.4);
     }
   }
 
   .navigation__menu_button_red {
     color: gray;
-    border: solid 3px red;
+    border: solid 2px red;
   }
 
   // navigation menu buttons
@@ -98,9 +89,14 @@
 }
 
 // Responsiveness
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1000px) {
   .navigation {
-    padding-left: 12px;
-    padding-right: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 20px;
+    padding: 10px;
+    height: 10%;
+    border-bottom: 2px solid rgba($color: #ffffff, $alpha: 0.2);
   }
 }

@@ -44,7 +44,7 @@ export default function Create() {
             {/* Creation form */}
             <div className={styles.create__grid_left}>
               <h1>Create NFT Contract</h1>
-
+              <p>This application allows creators to deploy their own NFT smart contracts onto the Rinkeby blockchain. </p>
               <div className={styles.create__upload}>
                 <div>
                   {/* Edition name */}
@@ -78,6 +78,23 @@ export default function Create() {
                       placeholder="Enter Symbol"
                       value={symbol}
                       onChange={(e) => setSymbol(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Edition symbol */}
+                  <div>
+                    <label htmlFor="type">
+                      Contract Type{" "}
+                      <span className={styles.create__upload_required}>
+                        (more coming soon)
+                      </span>
+                    </label>
+                    <input
+                      id="symbol"
+                      type="text"
+                      placeholder="Enter Symbol"
+                      value="ERC721"
+                      disabled
                     />
                   </div>
 

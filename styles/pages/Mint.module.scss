@@ -1,0 +1,150 @@
+// mint page authenticated state
+  .mint {
+    display: block;
+    margin: auto auto;
+    width: 100%;
+    max-width: 1000px;
+    min-height: 100vh;
+    padding: 0 10vw;
+  }
+  
+  .mint__upload {
+    width: calc(100% - 4px);
+    border: 2px solid white(0, 0, 0, 0.1);
+    padding: 10px 0px 0px;
+  
+    > div {
+      padding: 20px;
+    }
+  
+    div:nth-of-type(1) {
+      div {
+        display: block;
+        margin-block-end: 20px;
+  
+        label {
+          display: block;
+          font-size: 17px;
+          font-weight: 500;
+          margin-block-end: 10px;
+          text-align: left;
+        }
+  
+        input,
+        textarea {
+          padding: 15px;
+          width: 100%;
+          min-height: 50px;
+          font-size: 15px;
+          line-height: 14px;
+          font-weight: 400;
+          transition: all 0.1s ease-in 0s;
+          border: 3px solid transparent;
+          background: rgba(255, 255, 255, 0.1);
+          outline: none;
+          color: white;
+        }
+  
+        input:focus,
+        textarea:focus {
+          outline: none;
+          border-color: rgba(255, 255, 255, 255);
+        }
+  
+        > span {
+          display: block;
+          color: rgba(255, 255, 255, 0.7);
+          padding-bottom: 15px;
+          text-align: left;
+        }
+      }
+  
+      div:nth-last-of-type(1) {
+        margin-block-end: 0px;
+      }
+    }
+  
+    > div:nth-of-type(2) {
+      border-top: 2px solid rgba(255, 255, 255, 0.1);
+      text-align: right;
+  
+      button {
+        height: 50px;
+        width: 100%;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+        margin: 0px 5px;
+        border: none;
+      }
+  
+      button:disabled {
+        cursor: default;
+      }
+    }
+  }
+  
+  .mint__upload_required {
+    color: rgba(255, 255, 255, 0.3);
+  }
+  
+  // Error to display for fee share field
+  .mint__error {
+    display: block;
+    width: 100%;
+    padding-top: 10px;
+    font-size: 14px;
+    color: #ff0033 !important;
+    text-align: right !important;
+  }
+  
+  .mint__preview {
+    border: 1px solid lightgray;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  // NFT Prreview styling
+  .nft_preview_container {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 5%;
+    align-items: center;
+  }
+  
+  .detail {
+    width: 90vw;
+    padding-left: 20px;
+    order: 2;
+  }
+  
+  .sub_details {
+    display: flex;
+    flex-direction: row;
+    div {
+      padding-right: 50px;
+    }
+    padding-bottom: 20px;
+  }
+  
+  .media {
+    margin: 10px;
+  }
+  
+  .media_placeholder {
+    height: 40vh;
+    background-color: grey;
+  }
+  
+  // Responsive
+  @media screen and (max-width: 1000px) {
+    // Column layout
+    .mint__grid {
+      display: flex !important;
+      flex-direction: column;
+    }
+  }
+  
