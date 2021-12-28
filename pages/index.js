@@ -36,7 +36,10 @@ export default function Home() {
           <>
             {editions.map((edition, i) => {
               return (
-                <div className={styles.collections_row}> key={i}
+                <div 
+                  className={styles.collections_row}
+                  key={i}
+                > 
                   <p>{edition.name}</p>
                   <p>{edition.symbol}</p>
                   <p>ERC721</p>
