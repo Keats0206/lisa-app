@@ -1,67 +1,7 @@
-// Create page unauthenticated state
-.create__unauthenticated {
-  display: block;
-  margin: 0px auto;
-  width: 100%;
-  max-width: 1200px;
-  text-align: center;
-
-  h2 {
-    margin-block-end: 0px;
-  }
-
-  p {
-    color: rbga(0, 0, 0, 0.5);
-    margin-block-start: 10px;
-  }
-
-  button {
-    padding: 18px 25px;
-    font-weight: 500;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    margin-top: 20px;
-  }
-
-  button {
-    height: 50px;
-    width: 100%;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 16px;
-    cursor: pointer;
-    text-decoration: none;
-    margin: 0px 5px;
-    border: none;
-  }
-  button:last-of-type,
-  last-of-type {
-    margin-right: 0px;
-  }
-  button:focus {
-    outline: none;
-  }
-  button:hover,
-  a:hover {
-    opacity: 0.75;
-  }
-
-  button:disabled {
-    opacity: 0.75;
-    cursor: default;
-  }
-}
-
-// Create page authenticated state
-.create {
-  display: block;
+.container {
   margin: auto auto;
-  width: 100%;
-  max-width: 1000px;
   min-height: 100vh;
-  padding: 0 10vw;
+  margin-top: 10vh;
 }
 
 .create__upload {
@@ -160,39 +100,6 @@
   border: 1px solid lightgray;
   padding: 20px;
   border-radius: 8px;
-}
-
-// NFT Prreview styling
-.nft_preview_container {
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 5%;
-  align-items: center;
-}
-
-.detail {
-  width: 90vw;
-  padding-left: 20px;
-  order: 2;
-}
-
-.sub_details {
-  display: flex;
-  flex-direction: row;
-  div {
-    padding-right: 50px;
-  }
-  padding-bottom: 20px;
-}
-
-.media {
-  margin: 10px;
-}
-
-.media_placeholder {
-  height: 40vh;
-  background-color: grey;
 }
 
 // Responsive

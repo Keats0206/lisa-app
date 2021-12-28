@@ -32,19 +32,11 @@ export default function Create() {
 
   return (
     <Layout>
-      {!address ? (
-        // If not authenticated, display unauthenticated state
-        <div className={styles.create__unauthenticated}>
-          <h2>Whoops</h2>
-          <p>Please authenticate to use this page</p>
-        </div>
-      ) : (
-        // Else, if authenticated, display grid
-        <div className={styles.create}>
+        <div className={styles.container}>
+            <h2>Create NFT Contract</h2>
+            <p>This application allows creators to deploy their own NFT smart contracts onto the Rinkeby blockchain. </p>
             {/* Creation form */}
             <div className={styles.create__grid_left}>
-              <h1>Create NFT Contract</h1>
-              <p>This application allows creators to deploy their own NFT smart contracts onto the Rinkeby blockchain. </p>
               <div className={styles.create__upload}>
                 <div>
                   {/* Edition name */}
@@ -116,7 +108,6 @@ export default function Create() {
               </div>
             </div>
         </div>
-      )}
     </Layout>
   );
 }
